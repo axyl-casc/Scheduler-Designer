@@ -33,7 +33,7 @@ jobs:
 
       # Build CSS with Tailwind and PostCSS
       - name: Build Tailwind CSS
-        run: npx tailwindcss -i ./src/styles/input.css -o ./public/css/output.css --minify
+        run: npx tailwindcss -i ./src/styles/input.css -o ./public/styles/tw.css --minify
 
       # Optional: Run your custom build script if needed
       - name: Run build script

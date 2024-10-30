@@ -24,8 +24,10 @@
   },
   "scripts": {
   "build": "npx tailwindcss -i ./src/styles/input.css -o ./dist/styles.css --minify",
-  "start": "npx tailwindcss -i ./src/styles/input.css -o ./public/styles.css --watch"
+  "start": "npx tailwindcss -i ./src/styles/input.css -o ./public/styles.css --minify"
 }
+
+
 }
 
 

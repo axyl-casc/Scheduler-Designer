@@ -36,12 +36,15 @@ jobs:
       # Build the project for production
       - name: Build the project
         run: npm run build
-
+      # Build the project for production
+      - name: Copy Files
+        run: cp -rf ./public ./dist
+        
       # Upload the built project as an artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build
+          path: ./dist
 
   # Deploy the project to GitHub Pages
   deploy:

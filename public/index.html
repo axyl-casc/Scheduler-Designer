@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website with Tailwind and Godot</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Favicon (optional) -->
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
+    <header class="w-full p-5 bg-gray-800 shadow-lg text-center">
+        <h1 class="text-4xl font-bold">Welcome to My Website</h1>
+        <p class="text-lg mt-2 text-gray-400">Built with Tailwind CSS and Godot</p>
+    </header>
+
+    <main class="flex-grow w-full max-w-4xl mx-auto p-10">
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Interactive Godot Game</h2>
+            <p class="text-gray-300 mb-6">Enjoy this embedded Godot game demo. Use the iframe below to play directly in your browser!</p>
+
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe 
+                    src="./godot-export/game.html" 
+                    width="800" 
+                    height="600" 
+                    class="border-4 border-gray-700 rounded-lg shadow-xl"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <div class="mt-12">
+            <h2 class="text-2xl font-semibold mb-4">About This Project</h2>
+            <p class="text-gray-300">
+                This is a simple demo site styled with <span class="text-blue-400 font-bold">Tailwind CSS</span>. 
+                It features a web-based Godot game export, playable directly from the browser. 
+                Deploy this site easily using <span class="text-green-400 font-bold">GitHub Pages</span>!
+            </p>
+        </div>
+    </main>
+
+    <footer class="w-full p-5 bg-gray-800 text-center">
+        <p class="text-gray-500">© 2024 My Website. All rights reserved.</p>
+        <p class="text-gray-500">Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a> and <a href="https://godotengine.org/" class="text-blue-400 underline">Godot</a>.</p>
+    </footer>
+
+    <!-- JavaScript (optional) -->
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

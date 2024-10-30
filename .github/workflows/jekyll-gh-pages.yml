@@ -31,9 +31,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-  
-      - name: Copy Static Files
-        run: cp -R public/* dist/
         
       - name: Install Dependencies
         run: npm install

@@ -1,9 +1,6 @@
 # Node modules (dependencies)
 node_modules/
 
-# Build artifacts and generated files
-dist/
-public/styles.css
 
 # Logs
 npm-debug.log*
@@ -29,6 +26,3 @@ Thumbs.db  # Windows
 *.bak
 *.tmp
 ~$*
-
-# Ignore .nojekyll if you only want to serve static assets without processing
-!.nojekyll

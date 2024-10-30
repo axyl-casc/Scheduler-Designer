@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-        
+
       - name: Install Dependencies
         run: npm install
 
@@ -39,22 +39,24 @@ jobs:
         run: npm run build
 
       - name: Copy Static Files
-        run: cp -R public/ dist/
+        run: cp -R public/* dist/
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
-        
 
   # Deploy job
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     steps:
+      - name: Download Artifact
+        uses: actions/download-pages-artifact@v3
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

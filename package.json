@@ -23,11 +23,9 @@
     "tailwindcss": "^3.4.14"
   },
   "scripts": {
-  "build": "npx tailwindcss -i ./src/styles/input.css -o ./dist/styles.css --minify",
-  "start": "npx tailwindcss -i ./src/styles/input.css -o ./public/styles.css --minify"
-}
-
-
+    "build": "npx tailwindcss -i ./src/styles/input.css -o ./dist/styles.css --minify",
+    "start": "npx tailwindcss -i ./src/styles/input.css -o ./public/styles.css --minify"
+  }
 }
 
 

@@ -1,4 +1,4 @@
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+name: Build and Deploy with Tailwind and GitHub Pages
 
 on:
   push:
@@ -18,31 +18,40 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      # Set the source and destination directories
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          source: ./public     # Set this to the directory containing index.html
-          destination: ./_site  # Output directory for the built site
+          node-version: 18
 
+      - name: Install dependencies
+        run: npm install
+
+      # Build CSS with Tailwind and PostCSS
+      - name: Build Tailwind CSS
+        run: npx tailwindcss -i ./src/input.css -o ./public/output.css --minify
+
+      # Optional: Run your custom build script if needed
+      - name: Run build script
+        run: npm run build
+
+      # Upload the site files as an artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
 
   # Deployment job
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4

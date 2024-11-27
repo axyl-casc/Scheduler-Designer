@@ -14,7 +14,7 @@ class Simulator {
      * @param {Array} process_list - List of processes.
      * @param {Function} scheduling_algorithm - A function implementing the scheduling algorithm.
      */
-    initialize(process_list, scheduling_algorithm) {
+    initialize(process_list, scheduling_algorithm, div_for_scheduler) {
         this.processList = process_list;
         this.schedulingAlgorithm = scheduling_algorithm;
         this.isRunning = false;

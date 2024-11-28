@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Move JS
-        run: cp ./src ./public
+        run: cp -rf ./src ./public
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:

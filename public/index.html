@@ -7,51 +7,198 @@
     <title>My Website with Tailwind and Godot</title>
 
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="./styles/tw.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Favicon (optional) -->
     <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
+<body>
     <header class="w-full p-5 bg-gray-800 shadow-lg text-center">
-        <h1 class="text-4xl font-bold">Welcome to My Website</h1>
-        <p class="text-lg mt-2 text-gray-400">Built with Tailwind CSS and Godot</p>
+        <h1 class="text-4xl font-bold text-white">CPU Scheduler Simulator</h1>
+        <p class="text-lg mt-2 text-gray-400">Insert more here...</p>
     </header>
 
-    <main class="flex-grow w-full max-w-4xl mx-auto p-10">
-        <div class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Interactive Godot Game</h2>
-            <p class="text-gray-300 mb-6">Enjoy this embedded Godot game demo. Use the iframe below to play directly in your browser!</p>
-
-            <div class="aspect-w-16 aspect-h-9">
-                <iframe 
-                    src="./godot-export/game.html" 
-                    width="800" 
-                    height="600" 
-                    class="border-4 border-gray-700 rounded-lg shadow-xl"
-                    allowfullscreen>
-                </iframe>
+    <main id="mainScreen">
+        <div class="flex h-screen">
+            <!-- Left Container: Scrollable Process List -->
+            <div class="w-1/4 h-full bg-gray-300 border-r overflow-y-auto">
+                <div class="rounded-lg shadow-md bg-blue-300 p-4 m-4">
+                    <h2 class="text-xl font-bold p-4 border-b">Process List</h2>
+                    <ul class="p-4 space-y-2">
+                      <li class="bg-white p-2 rounded shadow">Process 1</li>
+                      <li class="bg-white p-2 rounded shadow">Process 2</li>
+                      <li class="bg-white p-2 rounded shadow">Process 3</li>
+                      <li class="bg-white p-2 rounded shadow">Process 4</li>
+                      <li class="bg-white p-2 rounded shadow">Process 5</li>
+                      <!-- Add more list items to demonstrate scrollability -->
+                    </ul>
+                    <button id="editProcessBtn"class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                      Edit Processes
+                    </button>
+                </div>
             </div>
-        </div>
+            
+          
+            <!-- Right Container: Buttons for Results/Simulation -->
+            <div id="windowScreen" class="w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
+                <div class="flex flex-row items-center p-4">
+                    <button id="showResultBtn" class="m-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                        Results
+                    </button>
+                    <button id="showSimBtn" class="m-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                        Simulation
+                    </button>
+    
+                </div>
+              
+            </div>
 
-        <div class="mt-12">
-            <h2 class="text-2xl font-semibold mb-4">About This Project</h2>
-            <p class="text-gray-300">
-                This is a simple demo site styled with <span class="text-blue-400 font-bold">Tailwind CSS</span>. 
-                It features a web-based Godot game export, playable directly from the browser. 
-                Deploy this site easily using <span class="text-green-400 font-bold">GitHub Pages</span>!
-            </p>
-        </div>
+            <!-- Simulator here -->
+            <div id="simulatorScreen" class="hidden w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
+                Simulator
+
+            </div>
+        
+            <!-- Results here -->
+            <div id="resultScreen" class="hidden w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
+                Results
+        
+            </div>
+          </div>
     </main>
 
+    
+
+    <aside id="pcbScreen" class="hidden flex h-screen">
+         <!-- Left Container: Scrollable Process List -->
+         <div class="w-1/4 h-full bg-gray-300 border-r overflow-y-auto">
+            <div class="rounded-lg shadow-md bg-blue-300 p-4 m-4">
+                <h2 class="text-xl font-bold p-4 border-b">Process List</h2>
+                <ul class="p-4 space-y-2">
+                  <li class="bg-white p-2 rounded shadow">Process 1</li>
+                  <li class="bg-white p-2 rounded shadow">Process 2</li>
+                  <li class="bg-white p-2 rounded shadow">Process 3</li>
+                  <li class="bg-white p-2 rounded shadow">Process 4</li>
+                  <li class="bg-white p-2 rounded shadow">Process 5</li>
+                  <!-- Add more list items to demonstrate scrollability -->
+                </ul>
+                <button id="returnMainBtn"class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                  Back to Simulator
+                </button>
+            </div>
+        </div>
+            
+            
+            </div>
+          
+      
+        <!-- Right Container: PCB Editing Form -->
+        <div class="w-3/4 h-full bg-gray-50 flex items-center justify-center">
+          <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-700">Edit PCB Details</h2>
+            <form class="space-y-6">
+              <!-- PCB Name -->
+              <div>
+                <label for="pcbName" class="block text-sm font-medium text-gray-600">PCB Name</label>
+                <input 
+                  type="text" 
+                  id="pcbName" 
+                  placeholder="Enter PCB name" 
+                  class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+      
+              <!-- Dimensions -->
+              <div class="grid grid-cols-2 gap-6">
+                <div>
+                  <label for="width" class="block text-sm font-medium text-gray-600">Width (mm)</label>
+                  <input 
+                    type="number" 
+                    id="width" 
+                    placeholder="Width" 
+                    class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label for="height" class="block text-sm font-medium text-gray-600">Height (mm)</label>
+                  <input 
+                    type="number" 
+                    id="height" 
+                    placeholder="Height" 
+                    class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+      
+              <!-- Layers -->
+              <div>
+                <label for="layers" class="block text-sm font-medium text-gray-600">Number of Layers</label>
+                <select 
+                  id="layers" 
+                  class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                >
+                  <option value="" disabled selected>Select layers</option>
+                  <option value="1">1 Layer</option>
+                  <option value="2">2 Layers</option>
+                  <option value="4">4 Layers</option>
+                  <option value="6">6 Layers</option>
+                </select>
+              </div>
+      
+              <!-- Material -->
+              <div>
+                <label for="material" class="block text-sm font-medium text-gray-600">Material</label>
+                <input 
+                  type="text" 
+                  id="material" 
+                  placeholder="Enter material type" 
+                  class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+      
+              <!-- Notes -->
+              <div>
+                <label for="notes" class="block text-sm font-medium text-gray-600">Additional Notes</label>
+                <textarea 
+                  id="notes" 
+                  placeholder="Enter any additional notes..." 
+                  rows="4" 
+                  class="w-full mt-2 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                ></textarea>
+              </div>
+      
+              <!-- Submit Button -->
+              <div class="flex justify-end">
+                <button 
+                  type="submit" 
+                  class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </aside>
+      
+        
+          
+
+
+
+
+    </aside>
+
+    
+
     <footer class="w-full p-5 bg-gray-800 text-center">
-        <p class="text-gray-500">© 2024 My Website. All rights reserved.</p>
+        <p class="text-gray-500">Axyl and Kevin - COMP3659 Fall 2024. All rights reserved.</p>
         <p class="text-gray-500">Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a> and <a href="https://godotengine.org/" class="text-blue-400 underline">Godot</a>.</p>
     </footer>
 
     <script src="./js/simulation.js"></script>
     <script src="./js/main.js"></script>
+    <script src="../src/js/main.js"></script>
 </body>
 
 </html>

@@ -9,8 +9,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Favicon (optional) -->
+    <!-- Favicon (optional) 
     <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
+    -->
 </head>
 
 <body>
@@ -33,7 +34,7 @@
                       <li class="bg-white p-2 rounded shadow">Process 5</li>
                       <!-- Add more list items to demonstrate scrollability -->
                     </ul>
-                    <button id="editProcessBtn"class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                    <button id="editProcessBtn" class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
                       Edit Processes
                     </button>
                 </div>
@@ -41,29 +42,32 @@
             
           
             <!-- Right Container: Buttons for Results/Simulation -->
-            <div id="windowScreen" class="w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
-                <div class="flex flex-row items-center p-4">
-                    <button id="showResultBtn" class="m-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
-                        Results
-                    </button>
-                    <button id="showSimBtn" class="m-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
-                        Simulation
-                    </button>
-    
+            <div id="windowScreen" class="w-3/4 bg-gray-500 flex flex-col items-center">
+              <div id="simulatorScreen" class="w-full h-5/6 flex flex-col justify-center items-center">
+                <div class="w-5/6 h-5/6 rounded-lg shadow-md bg-gray-100 p-4">
+                  Simulator
                 </div>
-              
-            </div>
+              </div>
 
-            <!-- Simulator here -->
-            <div id="simulatorScreen" class="hidden w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
-                Simulator
+              <div id="resultScreen" class="hidden w-full h-5/6 flex flex-col justify-center items-center">
+                <div class="w-5/6 h-5/6 rounded-lg shadow-md bg-gray-100 p-4">
+                  Results
+                </div>
 
-            </div>
-        
-            <!-- Results here -->
-            <div id="resultScreen" class="hidden w-3/4 h-full bg-gray-50 flex flex-col justify-center items-center space-y-4">
-                Results
-        
+
+              </div>
+
+              <div class="flex flex-row items-center m-0">
+                <button id="showSimBtn" class="mr-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                  Simulation
+                </button>
+
+                <button id="showResultBtn" class="ml-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                    Results
+                </button>
+                
+
+              </div>
             </div>
           </div>
     </main>
@@ -196,8 +200,7 @@
         <p class="text-gray-500">Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a> and <a href="https://godotengine.org/" class="text-blue-400 underline">Godot</a>.</p>
     </footer>
 
-    <script src="./js/simulation.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="../src/js/simulation.js"></script>
     <script src="../src/js/main.js"></script>
 </body>
 

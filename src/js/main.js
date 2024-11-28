@@ -7,12 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#pcbScreen").classList.toggle("hidden");
     })
     $("#showResultBtn").addEventListener("click", () => {
-        $("#windowScreen").classList.toggle("hidden");
-        $("#resultScreen").classList.toggle("hidden");
+        if($("#resultScreen").classList.contains("hidden")) {
+            $("#resultScreen").classList.toggle("hidden");
+            $("#simulatorScreen").classList.toggle("hidden");
+        }
+        
     })
     $("#showSimBtn").addEventListener("click", () => {
-        $("#windowScreen").classList.toggle("hidden");
-        $("#simulatorScreen").classList.toggle("hidden");
+        if($("#simulatorScreen").classList.contains("hidden")) {
+            $("#simulatorScreen").classList.toggle("hidden");
+            $("#resultScreen").classList.toggle("hidden");
+        }
+        
     })
     $("#returnMainBtn").addEventListener("click", () => {
         $("#pcbScreen").classList.toggle("hidden");

@@ -32,5 +32,6 @@ function Process(id, name, state, priority, is_io, running_chance, required_exec
     this.priority = priority;     // Assign the priority
     this.is_io = is_io;           // Assign the is_io (boolean indicating I/O process)
     this.running_chance = running_chance; // Assign the running_chance
+    this.execution_time = 0;
     this.required_execution_time = required_execution_time;
 }

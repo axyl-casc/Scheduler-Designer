@@ -1,3 +1,46 @@
+function $(selector) {return document.querySelector(selector)}
+function $$(selector) {return document.querySelectorAll(selector)}
+
+function updateProcessStates(processes) {
+    // Use Sets to automatically handle duplicate entries
+    let newProcesses = new Set();
+    let terminatedProcesses = new Set();
+    let readyProcesses = new Set();
+    let runningProcesses = new Set();
+    let waitingProcesses = new Set();
+
+    // Sort processes into their respective states
+    processes.forEach((process) => {
+        switch (process.state) {
+            case "New":
+                newProcesses.add(`P${process.id}`);
+                break;
+            case "Terminated":
+                terminatedProcesses.add(`P${process.id}`);
+                break;
+            case "Ready":
+                readyProcesses.add(`P${process.id}`);
+                break;
+            case "Running":
+                runningProcesses.add(`P${process.id}`);
+                break;
+            case "Waiting":
+                waitingProcesses.add(`P${process.id}`);
+                break;
+            case "Unwait":
+                waitingProcesses.add(`P${process.id}`);
+                break;
+        }
+    });
+
+    // Update the state labels with the corresponding process IDs
+    $("#new_state_process").textContent = Array.from(newProcesses).join(", ");
+    $("#terminated_state_process").textContent = Array.from(terminatedProcesses).join(", ");
+    $("#ready_state_process").textContent = Array.from(readyProcesses).join(", ");
+    $("#running_state_process").textContent = Array.from(runningProcesses).join(", ");
+    $("#wait_state_process").textContent = Array.from(waitingProcesses).join(", ");
+}
+
 
 
 function showToast(text) {

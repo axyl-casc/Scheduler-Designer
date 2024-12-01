@@ -18,9 +18,10 @@ class Simulator {
 
     initialize(process_list, scheduling_algorithm) {
         this.processList = process_list;
-        this.schedulingAlgorithm = scheduling_algorithm;
+        this.schedulingAlgorithm = scheduling_algorithm.toLowerCase();
         this.isRunning = false;
         this.currentProcessIndex = 0;
+        this.totalSteps = 0;
         console.log("Simulator initialized with process list and scheduling algorithm.");
     }
     incrementRunningExecutionTime() {
@@ -40,12 +41,14 @@ class Simulator {
         }
     }
     
+    
+
     run() {
         showToast("Simulation running...");
         this.isRunning = true;
         console.log("Simulation started.");
 
-        if (this.schedulingAlgorithm === "FIFO") {
+        if (this.schedulingAlgorithm === "fifo") {
             this.intervalId = setInterval(() => this.fifo_step(), 1000 / this.speed);
         } else if(this.schedulingAlgorithm === "priority"){
             this.intervalId = setInterval(() => this.priority_step(), 1000 / this.speed);

@@ -9,7 +9,7 @@
   <!-- Tailwind CSS -->
   <link href="./styles/tailwind.min.css" rel="stylesheet">
 
-    <!-- for styling the CPU graph diagram -->
+  <!-- for styling the CPU graph diagram -->
   <link href="./styles/stylesheet.css" rel="stylesheet">
 
   <!-- Favicon (optional) 
@@ -20,7 +20,7 @@
 <body>
   <header class="w-full p-5 bg-gray-800 shadow-lg text-center">
     <h1 class="text-4xl font-bold text-white">CPU Scheduler Simulator</h1>
-    <p class="text-lg mt-2 text-gray-400">Insert more here...</p>
+    <p class="text-lg mt-2 text-gray-400">Insert more here... Press simulation to run</p>
   </header>
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-20 right-5 hidden z-60">
@@ -34,19 +34,22 @@
     <!-- Modal Header -->
     <div class="px-4 py-2 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
       <h2 class="text-lg font-semibold">About Us</h2>
-      <button id="closeDialog" class="text-white hover:text-gray-300" onclick="document.querySelector('#aboutDialog').close()">&times;</button>
+      <button id="closeDialog" class="text-white hover:text-gray-300"
+        onclick="document.querySelector('#aboutDialog').close()">&times;</button>
     </div>
 
     <!-- Modal Content -->
     <div class="p-4">
       <p class="text-gray-700">
-        This is the final project by Axyl and Kevin for COMP 3659. We hope you enjoy exploring what we've built and appreciate the effort that went into this work.
+        This is the final project by Axyl and Kevin for COMP 3659. We hope you enjoy exploring what we've built and
+        appreciate the effort that went into this work.
       </p>
     </div>
 
     <!-- Modal Footer -->
     <div class="px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
-      <button id="closeDialogFooter" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" onclick="document.querySelector('#aboutDialog').close()">
+      <button id="closeDialogFooter" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        onclick="document.querySelector('#aboutDialog').close()">
         Close
       </button>
     </div>
@@ -70,7 +73,16 @@
             class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
             Edit Processes
           </button>
+          <br><br><hr><br>
+          <label for="scheduler" class="block text-sm font-medium text-gray-700 mb-2">Choose a Scheduler:</label>
+          <select id="scheduler"
+            class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option selected disabled>Select a scheduler</option>
+            <option value="fifo">FIFO</option>
+            <option value="priority">Priority</option>
+          </select>
         </div>
+
       </div>
 
 
@@ -261,8 +273,10 @@
 
 
   <footer class="w-full p-5 bg-gray-800 text-center">
-    <p class="text-gray-500"><a href="#" onclick="document.querySelector('#aboutDialog').showModal()" class="text-blue-600 hover:underline">About</a>
-<hr>Axyl and Kevin - COMP3659 Fall 2024. All rights reserved.</p>
+    <p class="text-gray-500"><a href="#" onclick="document.querySelector('#aboutDialog').showModal()"
+        class="text-blue-600 hover:underline">About</a>
+      <hr>Axyl and Kevin - COMP3659 Fall 2024. All rights reserved.
+    </p>
     <p class="text-gray-500">Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind
         CSS</a>
   </footer>

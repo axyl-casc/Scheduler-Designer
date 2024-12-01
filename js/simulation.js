@@ -48,6 +48,7 @@ class Simulator {
         console.log("Simulation started.");
 
         clearInterval(this.intervalId);
+        clearInterval(this.intervalIdWait);
 
         if (this.schedulingAlgorithm === "fifo") {
             this.intervalId = setInterval(() => this.fifo_step(), 1000 / this.speed);
@@ -59,7 +60,7 @@ class Simulator {
         }
 
         // Periodically check the waiting queue
-        setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
+        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
         updateProcessStates(this.processList);
     }
     priority_step() {

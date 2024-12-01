@@ -62,7 +62,9 @@ class Simulator {
     }
     priority_step() {
         this.totalSteps++;
-    
+        if(this.totalSteps == 1){
+            return true;
+        }
         // End simulation if all processes are Terminated
         if (this.processList.every(process => process.state === "Terminated")) {
             if (this.isRunning) {
@@ -74,8 +76,7 @@ class Simulator {
     
         // Increment execution time for currently running processes
         this.incrementRunningExecutionTime();
-    
-        // Update process states in the UI
+                // Update process states in the UI
         updateProcessStates(this.processList);
     
         // Select the highest-priority process that is not Terminated

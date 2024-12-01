@@ -47,13 +47,100 @@ class Simulator {
 
         if (this.schedulingAlgorithm === "FIFO") {
             this.intervalId = setInterval(() => this.fifo_step(), 1000 / this.speed);
-        } else {
+        } else if(this.schedulingAlgorithm === "priority"){
+            this.intervalId = setInterval(() => this.priority_step(), 1000 / this.speed);
+
+        }else   {
             this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
         }
 
         // Periodically check the waiting queue
-        setInterval(() => this.pollWaitingQueue(), 1000 / this.speed);
+        setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
     }
+    priority_step() {
+        this.totalSteps++;
+    
+        // End simulation if all processes are Terminated
+        if (this.processList.every(process => process.state === "Terminated")) {
+            if (this.isRunning) {
+                this.isRunning = false;
+                showToast("Simulation Complete.");
+            }
+            return false;
+        }
+    
+        // Increment execution time for currently running processes
+        this.incrementRunningExecutionTime();
+    
+        // Update process states in the UI
+        updateProcessStates(this.processList);
+    
+        // Select the highest-priority process that is not Terminated
+        const eligibleProcesses = this.processList.filter(
+            process => process.state !== "Terminated" && process.state !== "Waiting"
+        );
+        if (eligibleProcesses.length === 0) {
+            console.log("No eligible processes to run.");
+            return this.priority_step();
+        }
+    
+        // Sort processes by priority (lower value = higher priority)
+        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+    
+        const currentProcess = eligibleProcesses[0];
+
+        let old_state = currentProcess.state;
+    
+        // Handle the "New" or "Unwait" state, transitioning to "Ready"
+        if (currentProcess.state === "New" || currentProcess.state === "Unwait") {
+            currentProcess.state = "Ready";
+            console.log(`Process ${currentProcess.name} moved to Ready state.`);
+            updateProcessStates(this.processList);
+            return true;
+        }
+    
+        // Handle the "Ready" state, transitioning to "Running"
+        if (currentProcess.state === "Ready") {
+            currentProcess.state = "Running";
+            console.log(`Process ${currentProcess.name} is now Running.`);
+            updateProcessStates(this.processList);
+            return true;
+        }
+    
+        // Handle the "Running" state
+        if (currentProcess.state === "Running") {
+            currentProcess.execution_time++;
+            console.log(
+                `Process ${currentProcess.name}: Execution progress: ${currentProcess.execution_time}/${currentProcess.required_execution_time}`
+            );
+    
+            // Randomly transition to "Waiting" state if still executing
+            if (Math.random() > currentProcess.running_chance && currentProcess.execution_time < currentProcess.required_execution_time) {
+                currentProcess.state = "Waiting";
+                this.waitingQueue.push(currentProcess);
+                console.log(`Process ${currentProcess.name} moved to Waiting state.`);
+                updateProcessStates(this.processList);
+                return true;
+            }
+    
+            // Check if the process is complete
+            if (currentProcess.execution_time >= currentProcess.required_execution_time) {
+                currentProcess.state = "Terminated";
+                console.log(`Process ${currentProcess.name} has completed and is now Terminated.`);
+                updateProcessStates(this.processList);
+                return true;
+            }
+        }
+    
+        // No further changes needed for this step
+
+        if(old_state == currentProcess.state){
+            return this.priority_step();
+        }
+        return true;
+    }
+    
+
     fifo_step() {
         this.totalSteps++;
         if(this.totalSteps == 1){

@@ -7,10 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     simulation.setSpeed(0.5);
     let process_list = [];
     process_list.push(new Process(0, "systemd",  "New", 0, true, 0.1, 20));
-    process_list.push(new Process(1, "kevin",  "New", 0, true, 0.75, 2));
-    process_list.push(new Process(2, "test1",  "New", 0, true, 0.6, 5));
-    process_list.push(new Process(3, "test2",  "New", 0, true, 0.5, 10));
-    let scheduling_algorithm = "FIFO";
+    process_list.push(new Process(1, "kevin",  "New", 1, true, 0.75, 2));
+    process_list.push(new Process(2, "test1",  "New", 2, true, 0.6, 5));
+    process_list.push(new Process(3, "test2",  "New", 3, true, 0.5, 10));
+    let scheduling_algorithm = "priority";
     simulation.initialize(process_list, scheduling_algorithm);
     simulation.run();
 

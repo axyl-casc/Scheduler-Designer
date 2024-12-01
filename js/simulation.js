@@ -1,10 +1,3 @@
-
-
-
-_STATE_IDS = [
-    ""
-]
-
 class Simulator {
     constructor() {
         this.processList = []; // Stores the list of processes in the ready queue
@@ -78,10 +71,7 @@ class Simulator {
             }
             return false;
         }
-    
-        // Increment execution time for currently running processes
-        this.incrementRunningExecutionTime();
-    
+
         // Update process states in the UI
         updateProcessStates(this.processList);
     
@@ -93,6 +83,11 @@ class Simulator {
             console.log("No eligible processes to run.");
             return this.priority_step();
         }
+
+            
+        // Increment execution time for currently running processes
+        this.incrementRunningExecutionTime();
+    
     
         // Sort processes by priority (lower value = higher priority)
         eligibleProcesses.sort((a, b) => a.priority - b.priority);
@@ -160,8 +155,6 @@ class Simulator {
             this.isRunning = false;
             showToast("Simulation Complete.")
         }
-
-        this.incrementRunningExecutionTime();
         // Update process states in the UI
         updateProcessStates(this.processList);
     
@@ -175,7 +168,7 @@ class Simulator {
     
         const currentProcess = this.processList[this.currentProcessIndex];
         let old_state = currentProcess.state;
-
+        this.incrementRunningExecutionTime();
         if(currentProcess.state == "Terminated"){
             this.currentProcessIndex++;
             return this.fifo_step();

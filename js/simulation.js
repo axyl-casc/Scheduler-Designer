@@ -1,5 +1,6 @@
 
 
+
 _STATE_IDS = [
     ""
 ]
@@ -28,25 +29,25 @@ class Simulator {
         for (const process of this.processList) {
             if (process.state === "Running") {
                 process.execution_time++;
-                console.log(
-                    `Process ${process.name}: Execution time incremented to ${process.execution_time}.`
-                );
-    
-                // Check if the process has completed
-                if (process.execution_time >= process.required_execution_time) {
-                    process.state = "Terminated";
-                    console.log(`Process ${process.name} has completed and is now Terminated.`);
-                }
+            }
+            if (process.state === "Waiting") {
+                process.wait_time++;
+            }
+            if (process.state === "Ready") {
+                process.ready_time++;
+            }
+            if (process.state === "Terminated" && process.time_of_term == -1) {
+                process.time_of_term = this.totalSteps;
             }
         }
     }
     
-    
-
     run() {
         showToast("Simulation running...");
         this.isRunning = true;
         console.log("Simulation started.");
+
+        clearInterval(this.intervalId);
 
         if (this.schedulingAlgorithm === "fifo") {
             this.intervalId = setInterval(() => this.fifo_step(), 1000 / this.speed);
@@ -59,24 +60,28 @@ class Simulator {
 
         // Periodically check the waiting queue
         setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
+        updateProcessStates(this.processList);
     }
     priority_step() {
         this.totalSteps++;
         if(this.totalSteps == 1){
-            return true;
+            return false;
         }
         // End simulation if all processes are Terminated
         if (this.processList.every(process => process.state === "Terminated")) {
             if (this.isRunning) {
                 this.isRunning = false;
                 showToast("Simulation Complete.");
+            }else{
+                clearInterval(this.intervalId);
             }
             return false;
         }
     
         // Increment execution time for currently running processes
         this.incrementRunningExecutionTime();
-                // Update process states in the UI
+    
+        // Update process states in the UI
         updateProcessStates(this.processList);
     
         // Select the highest-priority process that is not Terminated
@@ -168,7 +173,8 @@ class Simulator {
         }
     
         const currentProcess = this.processList[this.currentProcessIndex];
-    
+        let old_state = currentProcess.state;
+
         if(currentProcess.state == "Terminated"){
             this.currentProcessIndex++;
             return this.fifo_step();
@@ -179,7 +185,7 @@ class Simulator {
         if (hasReadyProcess && currentProcess.state === "Ready") {
             console.log(`Another process is Ready. Skipping ${currentProcess.name}.`);
             this.currentProcessIndex++;
-            return false;
+            return this.fifo_step();;
         }
     
         // Handle the "New" state, transitioning to "Ready" only if no other process is Ready
@@ -205,7 +211,7 @@ class Simulator {
             console.log(`Process ${currentProcess.name} is in Waiting state. Moving to the next process.`);
             this.currentProcessIndex++;
             updateProcessStates(this.processList);
-            return false;
+            return this.fifo_step();;
         }
     
         // Handle processes in the "Ready" or "Running" state
@@ -214,6 +220,8 @@ class Simulator {
             if (currentProcess.state === "Ready") {
                 currentProcess.state = "Running";
                 console.log(`Process ${currentProcess.name} is now Running.`);
+                this.currentProcessIndex++;
+                updateProcessStates(this.processList);
                 return true;
             }
     
@@ -236,6 +244,12 @@ class Simulator {
     
         // Advance to the next process
         this.currentProcessIndex++;
+
+
+        if(old_state == currentProcess.state){
+            return this.priority_step();
+        }
+
         updateProcessStates(this.processList);
         return true;
     }

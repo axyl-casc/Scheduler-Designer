@@ -34,4 +34,7 @@ function Process(id, name, state, priority, is_io, running_chance, required_exec
     this.running_chance = running_chance; // Assign the running_chance
     this.execution_time = 0;
     this.required_execution_time = required_execution_time;
+    this.wait_time = 0;
+    this.ready_time = 0;
+    this.time_of_term = -1;
 }

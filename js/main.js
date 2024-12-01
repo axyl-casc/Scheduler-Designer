@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     process_list.push(new Process(2, "test1",  "New", 0, true, 0.6, 5));
     process_list.push(new Process(3, "test2",  "New", 0, true, 0.5, 10));
     let scheduling_algorithm = "FIFO";
-    let sim_div = $("#simulatorScreen");
-    simulation.initialize(process_list, scheduling_algorithm, sim_div);
+    simulation.initialize(process_list, scheduling_algorithm);
     simulation.run();
 
     $("#editProcessBtn").addEventListener("click", () => {

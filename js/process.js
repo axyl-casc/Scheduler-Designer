@@ -25,7 +25,7 @@
  * //   required_execution_time: 50
  * // }
  */
-function Process(id, name, state, priority, is_io, running_chance, required_execution_time) {
+function Process(id, name, state, priority, is_io, running_chance, required_execution_time, delay_time) {
     this.id = id;                 // Assign the id
     this.name = name;             // Assign the name
     this.state = state;           // Assign the state
@@ -37,4 +37,6 @@ function Process(id, name, state, priority, is_io, running_chance, required_exec
     this.wait_time = 0;
     this.ready_time = 0;
     this.time_of_term = -1;
+
+    this.delay_time = delay_time; // time until the process arrives in the new state
 }

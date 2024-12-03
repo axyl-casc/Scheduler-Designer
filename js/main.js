@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let process_list = [];
     if(!(localStorage.getItem(storage_key))) {
         //The 4 pushes below are test values - delete locally stored array "processes" to make them added.
-        process_list.push(new Process(0, "systemd",  "New", 0, true, 0.1, 20));
-        process_list.push(new Process(1, "kevin",  "New", 1, true, 0.75, 2));
-        process_list.push(new Process(2, "test1",  "New", 2, true, 0.6, 5));
-        process_list.push(new Process(3, "test2",  "New", 3, true, 0.5, 10));
+        process_list.push(new Process(0, "systemd",  "None", 0, true, 0.1, 20, 0));
+        process_list.push(new Process(1, "kevin",  "None", 1, true, 0.75, 2, 2));
+        process_list.push(new Process(2, "test1",  "None", 2, true, 0.6, 5, 0));
+        process_list.push(new Process(3, "test2",  "None", 3, true, 0.5, 10, 0));
         
         localStorage.setItem(storage_key, JSON.stringify(process_list));
     } else {

@@ -22,11 +22,16 @@ class Simulator {
         for (const process of this.processList) {
             if (process.state === "Running") {
                 process.execution_time++;
+                if(process.execution_time >= process.required_execution_time){
+                    process.state = "Terminated"
+                }else if(Math.random() > process.running_chance){
+                    process.state = "Waiting";
+                }
             }
             if (process.state === "Waiting") {
                 process.wait_time++;
             }
-            if (process.state === "Ready") {
+            if (process.state === "Ready" || process.state === "Unwait") {
                 process.ready_time++;
             }
             if (process.state === "Terminated" && process.time_of_term == -1) {
@@ -36,33 +41,45 @@ class Simulator {
     }
     
     run() {
-        let valid_data = true;
-        if(this.schedulingAlgorithm){
+        if(this.schedulingAlgorithm != "select a scheduler"){ // messy :(
             showToast("Simulation running...");
             this.isRunning = true;
             console.log("Simulation started.");
-    
             this.resetTimers();
-    
             updateProcessStates(this.processList);
+        }else{
+            showToast("Select a scheduler first...")
         }
+        
     }
 
     step(){
-        if(this.isRunning == true){
-            if (this.schedulingAlgorithm === "fifo") {
-                this.fifo_step();
-            } else if(this.schedulingAlgorithm === "priority"){
-                this.priority_step();
+        console.log(this.processList);
+        // add process to delay after a time
+        for(let p of this.processList){
+            if(p.delay_time <= 0 && p.state == "None"){
+                p.state = "New"
+            }else{
+                p.delay_time--;
             }
         }
 
-    }
-
-    priority_step() {
-        this.totalSteps++;
-        if(this.totalSteps == 1){
-            return false;
+        console.log(this.processList);
+        if(this.isRunning == true){
+            if (this.schedulingAlgorithm === "fifo") {
+                for(let p of this.processList){
+                    p.priority = p.id;
+                }
+            }else if(this.schedulingAlgorithm === "sjf"){
+                for(let p of this.processList){
+                    p.priority = p.required_execution_time;
+                }
+            }else if(this.schedulingAlgorithm === "ljf"){
+                for(let p of this.processList){
+                    p.priority = -1 * p.required_execution_time;
+                }
+            }
+            this.priority_step();
         }
         // End simulation if all processes are Terminated
         if (this.processList.every(process => process.state === "Terminated")) {
@@ -74,181 +91,43 @@ class Simulator {
             }
             return false;
         }
-
-        // Update process states in the UI
         updateProcessStates(this.processList);
-    
+    }
+
+    priority_step() {
         // Select the highest-priority process that is not Terminated
         const eligibleProcesses = this.processList.filter(
-            process => process.state !== "Terminated" && process.state !== "Waiting"
+            process => process.state != "Waiting" && process.state !== "Terminated"
         );
         if (eligibleProcesses.length === 0) {
             console.log("No eligible processes to run.");
-            return this.priority_step();
+            return false;
         }
 
-            
-        // Increment execution time for currently running processes
-        this.incrementRunningExecutionTime();
-    
+        const hasRunningProcess = this.processList.some(process => process.state === "Running");
+        if (hasRunningProcess) {
+            console.log(`Another process is running. Skipping`);
+            this.incrementRunningExecutionTime();
+            return false
+        }
     
         // Sort processes by priority (lower value = higher priority)
         eligibleProcesses.sort((a, b) => a.priority - b.priority);
-    
         const currentProcess = eligibleProcesses[0];
-
         let old_state = currentProcess.state;
-    
-        // Handle the "New" or "Unwait" state, transitioning to "Ready"
-        if (currentProcess.state === "New" || currentProcess.state === "Unwait") {
+
+        if(currentProcess.state === "Unwait"){
             currentProcess.state = "Ready";
-            console.log(`Process ${currentProcess.name} moved to Ready state.`);
-            updateProcessStates(this.processList);
-            return true;
-        }
-    
-        // Handle the "Ready" state, transitioning to "Running"
-        if (currentProcess.state === "Ready") {
+        }else if(currentProcess.state === "New"){
+            currentProcess.state = "Ready";
+        }else if(currentProcess.state === "Ready"){
             currentProcess.state = "Running";
-            console.log(`Process ${currentProcess.name} is now Running.`);
-            updateProcessStates(this.processList);
-            return true;
         }
-    
-        // Handle the "Running" state
-        if (currentProcess.state === "Running") {
-            currentProcess.execution_time++;
-            console.log(
-                `Process ${currentProcess.name}: Execution progress: ${currentProcess.execution_time}/${currentProcess.required_execution_time}`
-            );
-    
-            // Randomly transition to "Waiting" state if still executing
-            if (Math.random() > currentProcess.running_chance && currentProcess.execution_time < currentProcess.required_execution_time) {
-                currentProcess.state = "Waiting";
-                this.waitingQueue.push(currentProcess);
-                console.log(`Process ${currentProcess.name} moved to Waiting state.`);
-                updateProcessStates(this.processList);
-                return true;
-            }
-    
-            // Check if the process is complete
-            if (currentProcess.execution_time >= currentProcess.required_execution_time) {
-                currentProcess.state = "Terminated";
-                console.log(`Process ${currentProcess.name} has completed and is now Terminated.`);
-                updateProcessStates(this.processList);
-                return true;
-            }
-        }
-    
-        // No further changes needed for this step
 
         if(old_state == currentProcess.state){
-            return this.priority_step();
-        }
-        return true;
-    }
-    
-
-    fifo_step() {
-        this.totalSteps++;
-        if(this.totalSteps == 1){
-            return false;
-        }
-        if(this.processList.every(process => process.state === "Terminated" && this.isRunning)){
-            this.isRunning = false;
-            showToast("Simulation Complete.")
-        }
-        // Update process states in the UI
-        updateProcessStates(this.processList);
-    
-        // Check if all processes have been executed
-        if (this.currentProcessIndex >= this.processList.length) {
-            this.currentProcessIndex = 0;
-            console.log("Process list wrapped around:");
-            console.log(this.processList);
-            return this.fifo_step();
-        }
-    
-        const currentProcess = this.processList[this.currentProcessIndex];
-        let old_state = currentProcess.state;
-        this.incrementRunningExecutionTime();
-        if(currentProcess.state == "Terminated"){
-            this.currentProcessIndex++;
-            return this.fifo_step();
+            console.error("A valid process could not move !!!");
         }
 
-        // Ensure only one process is in the "Ready" state
-        const hasReadyProcess = this.processList.some(process => process.state === "Running");
-        if (hasReadyProcess && currentProcess.state === "Ready") {
-            console.log(`Another process is Ready. Skipping ${currentProcess.name}.`);
-            this.currentProcessIndex++;
-            return this.fifo_step();;
-        }
-    
-        // Handle the "New" state, transitioning to "Ready" only if no other process is Ready
-        if (currentProcess.state === "New" && !hasReadyProcess) {
-            currentProcess.state = "Ready";
-            console.log(`Process ${currentProcess.name} moved to Ready state.`);
-            this.currentProcessIndex++;
-            updateProcessStates(this.processList);
-            return true;
-        }
-    
-        // Handle the "Unwait" state, transitioning to "Ready" only if no other process is Ready
-        if (currentProcess.state === "Unwait" && !hasReadyProcess) {
-            currentProcess.state = "Ready";
-            console.log(`Process ${currentProcess.name} returned to Ready state from Unwait.`);
-            this.currentProcessIndex++;
-            updateProcessStates(this.processList);
-            return true;
-        }
-    
-        // Handle the "Waiting" state
-        if (currentProcess.state === "Waiting") {
-            console.log(`Process ${currentProcess.name} is in Waiting state. Moving to the next process.`);
-            this.currentProcessIndex++;
-            updateProcessStates(this.processList);
-            return this.fifo_step();;
-        }
-    
-        // Handle processes in the "Ready" or "Running" state
-        if (currentProcess.state === "Ready" || currentProcess.state === "Running") {
-            // Transition to "Running" state
-            if (currentProcess.state === "Ready") {
-                currentProcess.state = "Running";
-                console.log(`Process ${currentProcess.name} is now Running.`);
-                this.currentProcessIndex++;
-                updateProcessStates(this.processList);
-                return true;
-            }
-    
-            console.log(
-                `Process ${currentProcess.name}: Execution progress: ${currentProcess.execution_time}/${currentProcess.required_execution_time}`
-            );
-    
-            // Randomly transition to "Waiting" state if still executing
-            if (Math.random() > currentProcess.running_chance && currentProcess.execution_time < currentProcess.required_execution_time) {
-                currentProcess.state = "Waiting";
-                this.waitingQueue.push(currentProcess);
-                console.log(`Process ${currentProcess.name} moved to Waiting state.`);
-            } else if (currentProcess.execution_time >= currentProcess.required_execution_time) {
-                // Mark as "Terminated" if execution is complete
-                currentProcess.state = "Terminated";
-                console.log(`Process ${currentProcess.name} has completed and is now Terminated.`);
-                return true;
-            }
-        }
-    
-        // Advance to the next process
-        this.currentProcessIndex++;
-
-
-        if(old_state == currentProcess.state){
-            return this.priority_step();
-        }
-
-        updateProcessStates(this.processList);
-        return true;
     }
     
 
@@ -256,13 +135,11 @@ class Simulator {
      * Periodically checks the waiting queue to see if processes can return to Ready state.
      */
     pollWaitingQueue() {
-        for (let i = this.waitingQueue.length - 1; i >= 0; i--) {
-            const waitingProcess = this.waitingQueue[i];
-            if (Math.random() > 0.5) { // Simulate the process becoming ready
+        for (let i = this.processList.length - 1; i >= 0; i--) {
+            const waitingProcess = this.processList[i];
+            if (Math.random() > 0.5 && waitingProcess.state == "Waiting") { // Simulate the process becoming ready
                 waitingProcess.state = "Unwait";
                 console.log(`Process ${waitingProcess.name} is ready again.`);
-                this.processList.push(waitingProcess); // Reinsert into the ready queue
-                this.waitingQueue.splice(i, 1); // Remove from the waiting queue
             }
         }
         updateProcessStates(this.processList);
@@ -284,7 +161,7 @@ class Simulator {
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
 
-        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
+        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1.1 * (1000 / this.speed));
         this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
     }
 
@@ -294,10 +171,7 @@ class Simulator {
             return;
         }
         this.speed = speedValue;
-        if (this.isRunning) {
-            this.pause();
-            this.run();
-        }
+        this.resetTimers();
         console.log(`Simulation speed set to ${speedValue}.`);
     }
 

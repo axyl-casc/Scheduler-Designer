@@ -29,6 +29,7 @@ function createProcess() {
     new_process.running_chance = $("#runningChanceInput").value / 100;
     new_process.is_io = $("#isIOInput").value;
     new_process.required_execution_time = $("#burstTimeInput").value;
+    new_process.delay_time = $("#arrivalTimeInput").value;
 
     appendProcessList(new_process);
 }

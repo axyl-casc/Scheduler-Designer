@@ -30,6 +30,9 @@ function updateProcessStates(processes) {
             case "Unwait":
                 waitingProcesses.add(`P${process.id}`);
                 break;
+            case "None":
+                //
+                break;
         }
     });
 

@@ -46,15 +46,17 @@ class Simulator {
     
             updateProcessStates(this.processList);
         }
-
     }
 
     step(){
-        if (this.schedulingAlgorithm === "fifo") {
-            this.fifo_step();
-        } else if(this.schedulingAlgorithm === "priority"){
-            this.priority_step();
+        if(this.isRunning == true){
+            if (this.schedulingAlgorithm === "fifo") {
+                this.fifo_step();
+            } else if(this.schedulingAlgorithm === "priority"){
+                this.priority_step();
+            }
         }
+
     }
 
     priority_step() {

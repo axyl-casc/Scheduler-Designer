@@ -36,26 +36,27 @@ class Simulator {
     }
     
     run() {
-        showToast("Simulation running...");
-        this.isRunning = true;
-        console.log("Simulation started.");
-
-        clearInterval(this.intervalId);
-        clearInterval(this.intervalIdWait);
-
-        if (this.schedulingAlgorithm === "fifo") {
-            this.intervalId = setInterval(() => this.fifo_step(), 1000 / this.speed);
-        } else if(this.schedulingAlgorithm === "priority"){
-            this.intervalId = setInterval(() => this.priority_step(), 1000 / this.speed);
-
-        }else   {
-            this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
+        let valid_data = true;
+        if(this.schedulingAlgorithm){
+            showToast("Simulation running...");
+            this.isRunning = true;
+            console.log("Simulation started.");
+    
+            this.resetTimers();
+    
+            updateProcessStates(this.processList);
         }
 
-        // Periodically check the waiting queue
-        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
-        updateProcessStates(this.processList);
     }
+
+    step(){
+        if (this.schedulingAlgorithm === "fifo") {
+            this.fifo_step();
+        } else if(this.schedulingAlgorithm === "priority"){
+            this.priority_step();
+        }
+    }
+
     priority_step() {
         this.totalSteps++;
         if(this.totalSteps == 1){
@@ -274,6 +275,15 @@ class Simulator {
         clearInterval(this.intervalId);
         this.isRunning = false;
         console.log("Simulation paused.");
+    }
+
+    // resert the timers for calling the functions used
+    resetTimers(){
+        clearInterval(this.intervalId);
+        clearInterval(this.intervalIdWait);
+
+        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 2 * (1000 / this.speed));
+        this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
     }
 
     setSpeed(speedValue) {

@@ -59,6 +59,7 @@ function showToast(text) {
     toast.classList.remove('opacity-0');
     toast.classList.add('opacity-100');
 
+    addNotification(text);
     // Hide the toast after 3 seconds
     setTimeout(() => {
         toast.classList.remove('opacity-100');
@@ -68,3 +69,19 @@ function showToast(text) {
         }, 500);
     }, 3000);
 }
+
+function addNotification(message) {
+    const notificationBox = $('#notification-box');
+    
+    // Create a new notification element
+    const notification = document.createElement('div');
+    notification.className = 'mb-2 p-2 bg-gray-700 rounded-md';
+    notification.textContent = message;
+  
+    // Append to the notification box
+    notificationBox.appendChild(notification);
+  
+    // Scroll to the bottom to ensure the latest message is visible
+    notificationBox.scrollTop = notificationBox.scrollHeight;
+  }
+  

@@ -38,7 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
             $("#resultScreen").classList.toggle("hidden");
         }
         run_simulator();
-        
+    })
+    $("#slider").addEventListener("change", () => {
+        updateSliderValue($("#slider").value);
     })
     $("#returnMainBtn").addEventListener("click", () => {
         $("#pcbScreen").classList.toggle("hidden");

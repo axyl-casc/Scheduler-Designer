@@ -154,9 +154,16 @@ class Simulator {
             console.log("Simulation is already paused.");
             return;
         }
+
+        // disable timers to pause
         clearInterval(this.intervalId);
+        clearInterval(this.intervalIdWait);
         this.isRunning = false;
         console.log("Simulation paused.");
+    }
+    play(){
+        this.isRunning = true;
+        resetTimers();
     }
 
     // resert the timers for calling the functions used

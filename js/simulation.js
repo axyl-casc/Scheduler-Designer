@@ -54,7 +54,6 @@ class Simulator {
     }
 
     step(){
-        console.log(this.processList);
         // add process to delay after a time
         for(let p of this.processList){
             if(p.delay_time <= 0 && p.state == "None"){
@@ -64,17 +63,16 @@ class Simulator {
             }
         }
 
-        console.log(this.processList);
         if(this.isRunning == true){
-            if (this.schedulingAlgorithm === "fifo") {
+            if (this.schedulingAlgorithm == "fifo") {
                 for(let p of this.processList){
                     p.priority = p.id;
                 }
-            }else if(this.schedulingAlgorithm === "sjf"){
+            }else if(this.schedulingAlgorithm == "sjf"){
                 for(let p of this.processList){
                     p.priority = p.required_execution_time;
                 }
-            }else if(this.schedulingAlgorithm === "ljf"){
+            }else if(this.schedulingAlgorithm == "ljf"){
                 for(let p of this.processList){
                     p.priority = -1 * p.required_execution_time;
                 }
@@ -82,7 +80,7 @@ class Simulator {
             this.priority_step();
         }
         // End simulation if all processes are Terminated
-        if (this.processList.every(process => process.state === "Terminated")) {
+        if (this.processList.every(process => process.state == "Terminated")) {
             if (this.isRunning) {
                 this.isRunning = false;
                 showToast("Simulation Complete.");
@@ -97,14 +95,19 @@ class Simulator {
     priority_step() {
         // Select the highest-priority process that is not Terminated
         const eligibleProcesses = this.processList.filter(
-            process => process.state != "Waiting" && process.state !== "Terminated"
+            process => process.state != "Waiting" && process.state !== "Terminated" && process.state !== "None"
         );
         if (eligibleProcesses.length === 0) {
             console.log("No eligible processes to run.");
             return false;
         }
 
-        const hasRunningProcess = this.processList.some(process => process.state === "Running");
+        let hasRunningProcess = false;
+        for(let p of this.processList){
+            if(p.state == "Running"){
+                hasRunningProcess = true;
+            }
+        }
         if (hasRunningProcess) {
             console.log(`Another process is running. Skipping`);
             this.incrementRunningExecutionTime();

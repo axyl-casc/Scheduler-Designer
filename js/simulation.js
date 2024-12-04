@@ -53,12 +53,16 @@ class Simulator {
         
     }
 
+    getProcessList(){
+        return this.processList;
+    }
+
     step(){
         // add process to delay after a time
         for(let p of this.processList){
             if(p.delay_time <= 0 && p.state == "None"){
                 p.state = "New"
-            }else{
+            }else if(p.state == "None"){
                 p.delay_time--;
             }
         }
@@ -101,7 +105,6 @@ class Simulator {
             console.log("No eligible processes to run.");
             return false;
         }
-
         let hasRunningProcess = false;
         for(let p of this.processList){
             if(p.state == "Running"){
@@ -130,7 +133,6 @@ class Simulator {
         if(old_state == currentProcess.state){
             console.error("A valid process could not move !!!");
         }
-
     }
     
 

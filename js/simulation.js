@@ -122,6 +122,16 @@ class Simulator {
             console.log("No eligible processes to run.");
             return false;
         }
+        // Sort processes by priority (lower value = higher priority)
+        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+
+        for(let p of eligibleProcesses){
+            if(p.state == "New"){
+                p.state = "Ready";
+                return true;
+            }
+        }
+        
         let hasRunningProcess = false;
         for(let p of this.processList){
             if(p.state == "Running"){
@@ -134,8 +144,7 @@ class Simulator {
             return false
         }
     
-        // Sort processes by priority (lower value = higher priority)
-        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+
         const currentProcess = eligibleProcesses[0];
         let old_state = currentProcess.state;
 

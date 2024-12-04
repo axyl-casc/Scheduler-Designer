@@ -136,9 +136,10 @@ function generateStateTraces(simulator_obj) {
     };
 
     // Render the plot
-    Plotly.newPlot('boxPlot', data, layout);
+    //Plotly.newPlot('boxPlot', data, layout);
     generateSchedulingCriteriaTraces(simulator_obj)
 }
+
 function generateSchedulingCriteriaTraces(simulator_obj) {
     // Initialize arrays for each scheduling criterion
     let arrivalTimes = [];
@@ -151,24 +152,27 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
     // Populate arrays with data from the process list
     for (let p of simulator_obj.getProcessList()) {
         // Provided metrics
-        arrivalTimes.push(p.delay_time + p.new_time); // When the process entered the ready queue
-        burstTimes.push(p.execution_time); // Total CPU time required by the process
+        let arrivalTime = p.delay_time + p.new_time;
+        arrivalTimes.push(arrivalTime);
+
+        let burstTime = p.required_execution_time;
+        burstTimes.push(burstTime);
 
         // Derived metrics
-        // Completion Time = Start Time + Burst Time
+        // Completion Time = delay_time + execution_time
         let completionTime = p.delay_time + p.execution_time;
         completionTimes.push(completionTime);
 
         // Turnaround Time = Completion Time - Arrival Time
-        let turnaroundTime = completionTime - (p.delay_time + p.new_time);
+        let turnaroundTime = completionTime - arrivalTime;
         turnaroundTimes.push(turnaroundTime);
 
         // Waiting Time = Turnaround Time - Burst Time
-        let waitingTime = turnaroundTime - p.execution_time;
+        let waitingTime = turnaroundTime - burstTime;
         waitingTimes.push(waitingTime);
 
         // Response Time = First Response Time - Arrival Time
-        let responseTime = p.first_response_time - (p.delay_time + p.new_time);
+        let responseTime = (p.first_response_time || 0) - arrivalTime; // Use 0 if `first_response_time` is undefined
         responseTimes.push(responseTime);
     }
 
@@ -229,3 +233,4 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
     // Render the plot
     Plotly.newPlot('boxPlot2', data, layout);
 }
+

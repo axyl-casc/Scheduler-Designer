@@ -90,6 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#stepButton").addEventListener("click", () => {
         simulation.forceStep();
     })
+    $("#resetButton").addEventListener("click", () => {
+        simulation.reset();
+    })
 
     const processList = $("#processList");
     const processPopup = $("#processPopup");

@@ -1,7 +1,6 @@
 class Simulator {
     constructor() {
         this.processList = []; // Stores the list of processes in the ready queue
-        this.waitingQueue = []; // Stores processes in the waiting state
         this.schedulingAlgorithm = null; // Stores the scheduling algorithm
         this.isRunning = false; // Indicates if the simulation is running
         this.speed = 1; // Default simulation speed
@@ -9,16 +8,22 @@ class Simulator {
         this.intervalId = null; // Stores the interval ID for the simulation
         this.totalSteps = 0;
         this.cpuNotUsedFrames = 0;
+        this.cpuRunningFrames = 0;
         this.ganttData = [];
     }
 
     initialize(process_list, scheduling_algorithm) {
         this.processList = process_list;
-        this.schedulingAlgorithm = scheduling_algorithm.toLowerCase();
+        this.setScheduler(scheduling_algorithm)
         this.isRunning = false;
         this.currentProcessIndex = 0;
         this.totalSteps = 0;
         console.log("Simulator initialized with process list and scheduling algorithm.");
+    }
+
+    setScheduler(sch_str){
+        this.schedulingAlgorithm = sch_str.toLowerCase();
+        showToast(`Scheduler set to ${sch_str}`)
     }
 
     isOn(){
@@ -36,6 +41,7 @@ class Simulator {
         let cpu_used = false;
         for (const process of this.processList) {
             if (process.state === "Running") {
+                this.cpuRunningFrames++;
                 cpu_used = true;
                 this.ganttData.push(process.id)
                 process.execution_time++;
@@ -71,11 +77,12 @@ class Simulator {
     
     run() {
         if(this.schedulingAlgorithm != "select a scheduler"){ // messy :(
+            this.reset()
             showToast("Simulation running...");
             this.isRunning = true;
             console.log("Simulation started.");
             this.resetTimers();
-            updateProcessStates(this.processList);
+            this.step();
         }else{
             showToast("Select a scheduler first...")
         }
@@ -86,27 +93,59 @@ class Simulator {
         return this.processList;
     }
 
+
     forceStep(){
         this.isRunning = true;
-        this.step();
-        this.pollWaitingQueue();
+
+        if(this.step() == false){
+            this.pollWaitingQueue()
+        }
+        showToast("Stepped...");
         this.isRunning = false;
     }
 
+    reset(){
+        clearInterval(this.intervalId);
+        clearInterval(this.intervalIdWait);
+        this.isRunning = false;
+
+        for(let p of this.processList){
+            p.state = "None";
+            p.delay_time = p.time_to_arrival;
+            p.wait_time = 0;
+            p.ready_time = 0;
+            p.new_time = 0;
+            p.time_of_term = -1;
+            p.first_execution_time = -1;
+            p.execution_time = 0;
+        }
+
+        this.totalSteps = 0;
+        updateProcessStates(this.processList);
+
+        showToast("Simulator reset...")
+
+    }
+
     step(){
+        this.incrementRunningExecutionTime();
         // add process to delay after a time
+        let ret_val = false;
         for(let p of this.processList){
             if(p.delay_time <= 0 && p.state == "None"){
                 p.state = "New"
+                updateProcessStates(this.processList);
+                return true;
             }else if(p.state == "None"){
                 p.delay_time--;
             }
         }
+        updateProcessStates(this.processList);
 
         if(this.isRunning == true){
             if (this.schedulingAlgorithm == "fifo") {
                 for(let p of this.processList){
-                    p.priority = p.id;
+                    p.priority = p.id + p.time_to_arrival * 100;
                 }
             }else if(this.schedulingAlgorithm == "sjf"){
                 for(let p of this.processList){
@@ -117,7 +156,7 @@ class Simulator {
                     p.priority = -1 * p.required_execution_time;
                 }
             }
-            this.priority_step();
+            ret_val = this.priority_step();
         }
         // End simulation if all processes are Terminated
         if (this.processList.every(process => process.state == "Terminated")) {
@@ -130,9 +169,11 @@ class Simulator {
             return false;
         }
         updateProcessStates(this.processList);
+        return ret_val
     }
 
     priority_step() {
+        let ret_val = true;
         // Select the highest-priority process that is not Terminated
         const eligibleProcesses = this.processList.filter(
             process => process.state != "Waiting" && process.state !== "Terminated" && process.state !== "None"
@@ -159,7 +200,6 @@ class Simulator {
         }
         if (hasRunningProcess) {
             console.log(`Another process is running. Skipping`);
-            this.incrementRunningExecutionTime();
             return false
         }
     
@@ -169,6 +209,7 @@ class Simulator {
 
         if(currentProcess.state === "Unwait"){
             currentProcess.state = "Ready";
+            ret_val = false;
         }else if(currentProcess.state === "New"){
             currentProcess.state = "Ready";
         }else if(currentProcess.state === "Ready"){
@@ -178,6 +219,7 @@ class Simulator {
         if(old_state == currentProcess.state){
             console.error("A valid process could not move !!!");
         }
+        return ret_val;
     }
     
 
@@ -185,14 +227,17 @@ class Simulator {
      * Periodically checks the waiting queue to see if processes can return to Ready state.
      */
     pollWaitingQueue() {
+        let ret_val = false;
         for (let i = this.processList.length - 1; i >= 0; i--) {
             const waitingProcess = this.processList[i];
             if (Math.random() > 0.5 && waitingProcess.state == "Waiting") { // Simulate the process becoming ready
                 waitingProcess.state = "Unwait";
                 console.log(`Process ${waitingProcess.name} is ready again.`);
+                ret_val = true
             }
         }
         updateProcessStates(this.processList);
+        return ret_val
     }
 
     pause() {

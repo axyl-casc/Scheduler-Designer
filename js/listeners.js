@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#createProcessBtn").addEventListener("click", () => {
         createProcess();
     })
+    $("#scheduler").addEventListener("change", () => {
+        simulation.setScheduler($("#scheduler").value);
+    })
 })
 
 /*

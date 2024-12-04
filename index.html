@@ -148,12 +148,12 @@
               <!-- Running to Ready -->
               <line x1="360" y1="200" x2="240" y2="200" class="arrow"></line>
             </svg>
-            <div id ="speedSlider" class="flex flex-grow flex-col items-center mt-8">
+            <div id ="simControls" class="flex flex-grow flex-col items-center mt-8">
               <div class="flex space-x-4">
                 <!-- Play Button -->
                 <button id="playButton" class="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
                   Play
-                </button>
+                </button> 
 
                 <!-- Pause Button -->
                 <button id="pauseButton" class="px-4 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -164,9 +164,15 @@
                 <button id="stepButton" class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                   Step
                 </button>
+
+                <!-- Reset Button -->
+              <button id="resetButton" class="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                Reset
+              </button>
+
               </div>
               
-              <label for="slider" class="mb-2 text-gray-700 font-medium">Adjust Speed</label>
+              <label for="slider" class="mb-2 text-gray-700 font-medium p-2">Adjust Speed</label>
               <input 
                 id="slider" 
                 type="range" 
@@ -333,13 +339,18 @@
 
 
   <footer class="w-full p-5 bg-gray-800 text-center">
-    <p class="text-gray-500"><a href="#" onclick="document.querySelector('#aboutDialog').showModal()"
-        class="text-blue-600 hover:underline">About</a>
-      <hr></p>
-    <p class="text-white-500><a href="https://axyl-casc.github.io/" class="underline">Axyl</a> and <a href="https://github.com/Kevinmru737" class="underline">Kevin</a> - COMP3659 Fall 2024. All rights reserved.
-    </p><p class="text-gray-500">Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind
-        CSS</a> & <a href="https://plotly.com/" class="text-blue-400 underline">Plotly</a>
+    <p class="text-gray-500">
+      <a href="#" onclick="document.querySelector('#aboutDialog').showModal()" class="text-blue-600 hover:underline">About</a>
+    </p>
+    <hr>
+    <p class="text-gray-500">
+      <a href="https://axyl-casc.github.io/" class="underline">Axyl</a> & <a href="https://github.com/Kevinmru737" class="underline">Kevin</a> - COMP3659 Fall 2024. All rights reserved.
+    </p>
+    <p class="text-gray-500">
+      Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a> & <a href="https://plotly.com/" class="text-blue-400 underline">Plotly</a>
+    </p>
   </footer>
+  
 
 </body>
 

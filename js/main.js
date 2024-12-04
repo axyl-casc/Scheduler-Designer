@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         process_list = JSON.parse(localStorage.getItem(storage_key));
     }
     popProcessList("processList");
-    console.dir(process_list)
 
     $("#editProcessBtn").addEventListener("click", () => {
         $("#mainScreen").classList.toggle("hidden");
@@ -58,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
             $("#simulatorScreen").classList.toggle("hidden");
             $("#resultScreen").classList.toggle("hidden");
         }
+
+        if(localStorage.getItem(storage_key)) {
+            process_list = JSON.parse(localStorage.getItem(storage_key));
+        }
         run_simulator(process_list);
     })
     $("#slider").addEventListener("change", () => {
@@ -72,45 +75,113 @@ document.addEventListener("DOMContentLoaded", () => {
         clearProcessList();
         popProcessList("editProcessList");
     })
+    const processList = $("#processList");
+    const processPopup = $("#processPopup");
+    const processDetails = $("#processDetails");
+    const closePopup = $("#closePopup");
+
+    // Populate the popup with process details
+    const displayProcessDetails = (process) => {
+        processDetails.innerHTML = `
+        <p><strong>ID:</strong> ${process.id}</p>
+        <p><strong>Name:</strong> ${process.name}</p>
+        <p><strong>State:</strong> ${process.state}</p>
+        <p><strong>Priority:</strong> ${process.priority}</p>
+        <p><strong>Is IO:</strong> ${process.is_io}</p>
+        <p><strong>Running Chance:</strong> ${process.running_chance}</p>
+        <p><strong>Execution Time:</strong> ${process.execution_time}</p>
+        <p><strong>Required Execution Time:</strong> ${process.required_execution_time}</p>
+        <p><strong>Wait Time:</strong> ${process.wait_time}</p>
+        <p><strong>Ready Time:</strong> ${process.ready_time}</p>
+        <p><strong>Time of Termination:</strong> ${process.time_of_term}</p>
+        <p><strong>Delay Time:</strong> ${process.delay_time}</p>
+        `;
+        processPopup.classList.remove("hidden");
+    };
+
+    // Attach click event to process items
+    processList.addEventListener("click", (e) => {
+        
+        let process_list = [];
+        if(localStorage.getItem(storage_key)) {
+            process_list = JSON.parse(localStorage.getItem(storage_key));
+        }
+        const process = process_list.find((p) => p.id == e.target.dataset.id);
+        
+        if (process) {
+            displayProcessDetails(process);
+        }
+    });
+
+    $("#editProcessList").addEventListener("click", (e) => {
+        
+        let process_list = [];
+        if(localStorage.getItem(storage_key)) {
+            process_list = JSON.parse(localStorage.getItem(storage_key));
+        }
+        const process = process_list.find((p) => p.id == e.target.dataset.id);
+        
+        if (process) {
+            displayProcessDetails(process);
+        }
+    });
 
     
+
+    // Close popup
+    closePopup.addEventListener("click", () => {
+        processPopup.classList.add("hidden");
+    });
+
+
+        
 })
 
-/*
-*   popProcessList - Populates the list of processes based on locally stored data
-*
-*   list_id        - the id of the html ul element to populate.
-*
-*   Details: No changes to the actual data is made, only changes the websites html
-*
-*/
-function popProcessList(list_id) {
-    const list = $(`#${list_id}`);
-    list.innerHTML = '';
-    if(localStorage.getItem(storage_key)) {
-        let process_list = JSON.parse(localStorage.getItem(storage_key));
-        process_list.forEach((process) => {
-            let name = document.createElement("li");
-            name.className = "bg-white p-2 rounded shadow";
-            name.textContent = process.name;
-            list.appendChild(name);
-            let id = document.createElement("strong");
-            id.className = "ml-4";
-            id.textContent = "P" + process.id;
-            name.appendChild(id);
-        })
+    /*
+    *   popProcessList - Populates the list of processes based on locally stored data
+    *
+    *   list_id        - the id of the html ul element to populate.
+    *
+    *   Details: No changes to the actual data is made, only changes the websites html
+    *
+    */
+    function popProcessList(list_id) {
+        const list = $(`#${list_id}`);
+        list.innerHTML = '';
+        if(localStorage.getItem(storage_key)) {
+            let process_list = JSON.parse(localStorage.getItem(storage_key));
+            process_list.forEach((process) => {
+                let name = document.createElement("li");
+                name.className = "bg-white p-2 rounded shadow";
+                name.textContent = process.name;
+                name.dataset.id = process.id;
+                name.addEventListener("mouseover", (e) => {
+        
+                    e.target.classList.toggle("bg-blue-500");
+                });
+            
+                name.addEventListener("mouseout", (e) => {
+                    
+                    e.target.classList.toggle("bg-blue-500");
+                });
+                list.appendChild(name);
+                let id = document.createElement("strong");
+                id.className = "ml-4";
+                id.textContent = "P" + process.id;
+                name.appendChild(id);
+            })
+        }
+
     }
 
-}
-
-/*
-*   clearProcessList - Deletes all locally stored process data
-*
-*/
-function clearProcessList() {
-    if(localStorage.getItem(storage_key)) {
-        let process_list = [];
-        localStorage.setItem(storage_key, JSON.stringify(process_list));
-    }
+    /*
+    *   clearProcessList - Deletes all locally stored process data
+    *
+    */
+    function clearProcessList() {
+        if(localStorage.getItem(storage_key)) {
+            let process_list = [];
+            localStorage.setItem(storage_key, JSON.stringify(process_list));
+        }
 
 }

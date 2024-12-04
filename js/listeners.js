@@ -49,6 +49,14 @@ function appendProcessList(process) {
     let name = document.createElement("li");
     name.className = "bg-white p-2 rounded shadow";
     name.textContent = process.name;
+    name.dataset.id = process.id;
+    name.addEventListener("mouseover", (e) => {
+        e.target.classList.toggle("bg-blue-500");
+    });
+
+    name.addEventListener("mouseout", (e) => {
+        e.target.classList.toggle("bg-blue-500");
+    });
     let id = document.createElement("strong");
     id.className = "ml-4";
     id.textContent = "P" + process.id;

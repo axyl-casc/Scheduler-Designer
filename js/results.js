@@ -74,7 +74,7 @@ function display_results(simulator_obj) {
     };
 
     // Plot the chart
-    //Plotly.newPlot('ganttChart', data, layout);
+    Plotly.newPlot('ganttChart', data, layout);
 
     generateStateTraces(simulator_obj);
 }
@@ -139,6 +139,7 @@ function generateStateTraces(simulator_obj) {
     Plotly.newPlot('boxPlot', data, layout);
     generateSchedulingCriteriaTraces(simulator_obj)
 }
+
 function generateSchedulingCriteriaTraces(simulator_obj) {
     // Initialize arrays for each scheduling criterion
     let arrivalTimes = [];
@@ -150,67 +151,64 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
 
     // Populate arrays with data from the process list
     for (let p of simulator_obj.getProcessList()) {
-        // Provided metrics
-        arrivalTimes.push(p.delay_time + p.new_time); // When the process entered the ready queue
-        burstTimes.push(p.execution_time); // Total CPU time required by the process
+        let arrivalTime = p.time_to_arrival + p.new_time;
+        let burstTime = p.required_execution_time;
+        let completionTime = p.ready_time+p.wait_time+p.new_time+p.execution_time;
+        let turnaroundTime = completionTime - arrivalTime;
+        let waitTime = turnaroundTime - burstTime;
+        let responseTime = p.first_execution_time - arrivalTime;
 
-        // Derived metrics
-        // Completion Time = Start Time + Burst Time
-        let completionTime = p.delay_time + p.execution_time;
+        console.log("--------------\nCPU CRITERIA:")
+        console.log(p);
+        console.log(arrivalTime);
+        console.log(burstTime);
+        console.log(completionTime);
+        console.log(turnaroundTime);
+        console.log(waitTime);
+        console.log(responseTime);
+        console.log("--------------")
+
+        arrivalTimes.push(arrivalTime);
+        burstTimes.push(burstTime);
         completionTimes.push(completionTime);
-
-        // Turnaround Time = Completion Time - Arrival Time
-        let turnaroundTime = completionTime - (p.delay_time + p.new_time);
         turnaroundTimes.push(turnaroundTime);
-
-        // Waiting Time = Turnaround Time - Burst Time
-        let waitingTime = turnaroundTime - p.execution_time;
-        waitingTimes.push(waitingTime);
-
-        // Response Time = First Response Time - Arrival Time
-        let responseTime = p.first_response_time - (p.delay_time + p.new_time);
+        waitingTimes.push(waitTime);
         responseTimes.push(responseTime);
     }
 
     // Create traces for each scheduling criterion
-    const arrivalTrace = {
-        y: arrivalTimes,
-        type: 'box',
-        name: 'Arrival Times'
-    };
-
-    const burstTrace = {
-        y: burstTimes,
-        type: 'box',
-        name: 'Burst Times'
-    };
-
-    const completionTrace = {
-        y: completionTimes,
-        type: 'box',
-        name: 'Completion Times'
-    };
-
-    const turnaroundTrace = {
-        y: turnaroundTimes,
-        type: 'box',
-        name: 'Turnaround Times'
-    };
-
-    const waitingTrace = {
-        y: waitingTimes,
-        type: 'box',
-        name: 'Waiting Times'
-    };
-
-    const responseTrace = {
-        y: responseTimes,
-        type: 'box',
-        name: 'Response Times'
-    };
-
-    // Combine traces into an array for plotting
-    const data = [arrivalTrace, burstTrace, completionTrace, turnaroundTrace, waitingTrace, responseTrace];
+    const traces = [
+        {
+            y: arrivalTimes,
+            type: 'box',
+            name: 'Arrival Times'
+        },
+        {
+            y: burstTimes,
+            type: 'box',
+            name: 'Burst Times'
+        },
+        {
+            y: completionTimes,
+            type: 'box',
+            name: 'Completion Times'
+        },
+        {
+            y: turnaroundTimes,
+            type: 'box',
+            name: 'Turnaround Times'
+        },
+        {
+            y: waitingTimes,
+            type: 'box',
+            name: 'Waiting Times'
+        },
+        {
+            y: responseTimes,
+            type: 'box',
+            name: 'Response Times'
+        }
+    ];
 
     // Define layout for visualization
     const layout = {
@@ -221,11 +219,13 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
         },
         xaxis: {
             title: 'Criteria',
-            showgrid: true
+            showgrid: true,
+            tickvals: [0, 1, 2, 3, 4, 5],
+            ticktext: ['Arrival', 'Burst', 'Completion', 'Turnaround', 'Waiting', 'Response']
         },
         boxmode: 'group' // Group boxes by criteria
     };
 
     // Render the plot
-    Plotly.newPlot('boxPlot2', data, layout);
+    Plotly.newPlot('boxPlot2', traces, layout);
 }

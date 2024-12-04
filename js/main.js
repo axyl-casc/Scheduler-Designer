@@ -19,7 +19,6 @@ function run_simulator(process_list){
 }
 
 function updateSliderValue(value) {
-    document.querySelector('#slider-value').textContent = value;
     simulation.setSpeed(value);
   }
   
@@ -61,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if(localStorage.getItem(storage_key)) {
             process_list = JSON.parse(localStorage.getItem(storage_key));
         }
-        run_simulator(process_list);
     })
     $("#slider").addEventListener("change", () => {
         updateSliderValue($("#slider").value);
@@ -75,6 +73,22 @@ document.addEventListener("DOMContentLoaded", () => {
         clearProcessList();
         popProcessList("editProcessList");
     })
+
+    $("#playButton").addEventListener("click", () => {
+        if(simulation.isOn() == false){
+            run_simulator(process_list);
+        }else{
+            simulation.play();
+        }
+
+    })
+    $("#pauseButton").addEventListener("click", () => {
+        simulation.pause();
+    })
+    $("#stepButton").addEventListener("click", () => {
+        simulation.forceStep();
+    })
+
     const processList = $("#processList");
     const processPopup = $("#processPopup");
     const processDetails = $("#processDetails");

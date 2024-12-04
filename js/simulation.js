@@ -21,10 +21,18 @@ class Simulator {
         console.log("Simulator initialized with process list and scheduling algorithm.");
     }
 
+    isOn(){
+        if(this.totalSteps == 0 && this.isRunning == false){
+            return false;
+        }
+        return true;
+    }
+
     getGanttData(){
         return this.ganttData;
     }
     incrementRunningExecutionTime() {
+        this.totalSteps++;
         let cpu_used = false;
         for (const process of this.processList) {
             if (process.state === "Running") {
@@ -35,6 +43,10 @@ class Simulator {
                     process.state = "Terminated"
                 }else if(Math.random() > process.running_chance){
                     process.state = "Waiting";
+                }
+
+                if(process.first_execution_time == -1){
+                    process.first_execution_time = this.totalSteps;
                 }
             }
             if (process.state === "Waiting") {
@@ -72,6 +84,13 @@ class Simulator {
 
     getProcessList(){
         return this.processList;
+    }
+
+    forceStep(){
+        this.isRunning = true;
+        this.step();
+        this.pollWaitingQueue();
+        this.isRunning = false;
     }
 
     step(){
@@ -122,6 +141,16 @@ class Simulator {
             console.log("No eligible processes to run.");
             return false;
         }
+        // Sort processes by priority (lower value = higher priority)
+        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+
+        for(let p of eligibleProcesses){
+            if(p.state == "New"){
+                p.state = "Ready";
+                return true;
+            }
+        }
+        
         let hasRunningProcess = false;
         for(let p of this.processList){
             if(p.state == "Running"){
@@ -134,8 +163,7 @@ class Simulator {
             return false
         }
     
-        // Sort processes by priority (lower value = higher priority)
-        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+
         const currentProcess = eligibleProcesses[0];
         let old_state = currentProcess.state;
 
@@ -182,7 +210,7 @@ class Simulator {
     }
     play(){
         this.isRunning = true;
-        resetTimers();
+        this.resetTimers();
     }
 
     // resert the timers for calling the functions used

@@ -77,7 +77,7 @@ class Simulator {
     
     run() {
         if(this.schedulingAlgorithm != "select a scheduler"){ // messy :(
-            this.reset()
+            this.reset(false)
             showToast("Simulation running...");
             this.isRunning = true;
             console.log("Simulation started.");
@@ -104,10 +104,11 @@ class Simulator {
         this.isRunning = false;
     }
 
-    reset(){
+    reset(displayToast){
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
         this.isRunning = false;
+        this.ganttData = [];
 
         for(let p of this.processList){
             p.state = "None";
@@ -122,12 +123,14 @@ class Simulator {
 
         this.totalSteps = 0;
         updateProcessStates(this.processList);
-
-        showToast("Simulator reset...")
+        if(displayToast){
+            showToast("Simulator reset...")
+        }
 
     }
 
     step(){
+        console.log(this.processList)
         this.incrementRunningExecutionTime();
         // add process to delay after a time
         let ret_val = false;
@@ -138,6 +141,13 @@ class Simulator {
                 return true;
             }else if(p.state == "None"){
                 p.delay_time--;
+            }
+        }
+        for(let p of this.processList){
+            if(p.delay_time <= 0 && p.state == "New"){
+                p.state = "Ready" // assumes new process creation is a queue
+                updateProcessStates(this.processList);
+                return true;
             }
         }
         updateProcessStates(this.processList);
@@ -210,8 +220,6 @@ class Simulator {
         if(currentProcess.state === "Unwait"){
             currentProcess.state = "Ready";
             ret_val = false;
-        }else if(currentProcess.state === "New"){
-            currentProcess.state = "Ready";
         }else if(currentProcess.state === "Ready"){
             currentProcess.state = "Running";
         }

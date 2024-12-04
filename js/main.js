@@ -2,21 +2,9 @@ function $(selector) {return document.querySelector(selector)}
 function $$(selector) {return document.querySelectorAll(selector)}
 const simulation = new Simulator();
 simulation.setSpeed(0.5); // set a default speed
+simulation.reset(false);
 
 const storage_key = "processes"; //the key for locally stored processes
-
-
-//Delete the comments if you're okay with how I changed it
-function run_simulator(process_list){
-    //let process_list = [];
-    //process_list.push(new Process(0, "systemd",  "New", 0, true, 0.1, 20));
-    //process_list.push(new Process(1, "kevin",  "New", 1, true, 0.75, 2));
-    //process_list.push(new Process(2, "test1",  "New", 2, true, 0.6, 5));
-    //process_list.push(new Process(3, "test2",  "New", 3, true, 0.5, 10));
-    let scheduling_algorithm = $("#scheduler").value;
-    simulation.initialize(process_list, scheduling_algorithm);
-    simulation.run();
-}
 
 function updateSliderValue(value) {
     simulation.setSpeed(value);
@@ -77,12 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     $("#playButton").addEventListener("click", () => {
-        if(simulation.isOn() == false){
-            run_simulator(process_list);
-        }else{
+        if(simulation.isOn()){
             simulation.play();
+        }else{
+            simulation.initialize(process_list, $("#scheduler").value);
+            simulation.run();
         }
-
+        
     })
     $("#pauseButton").addEventListener("click", () => {
         simulation.pause();
@@ -91,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         simulation.forceStep();
     })
     $("#resetButton").addEventListener("click", () => {
-        simulation.reset();
+        simulation.reset(true);
     })
 
     const processList = $("#processList");

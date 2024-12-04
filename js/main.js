@@ -31,6 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#pcbScreen").classList.toggle("hidden");
         $("#createProcessBtn").textContent = "Create";
         popProcessList("editProcessList");
+        if($("#createProcessBtn").classList.contains("hidden")) {
+            $("#updateProcessBtn").classList.toggle("hidden");
+            $("#createProcessBtn").classList.toggle("hidden");
+        }
+        
     })
     $("#showResultBtn").addEventListener("click", () => {
         if($("#resultScreen").classList.contains("hidden")) {
@@ -134,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //the new id is equal to the length of the process list before addition
 
             //all new processes should be "New"? check with axyl
-            process.state = "New";
+            process.state = "None";
 
             $("#priorityInput").value = process.priority;
             $("#runningChanceInput").value = process.running_chance * 100;
@@ -154,15 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 resetProcessForm();
                 popProcessList("editProcessList");
                 process = undefined;
-                $("#updateProcessBtn").classList.toggle("hidden");
-                $("#createProcessBtn").classList.toggle("hidden");
             }
-            
-            
-        } else {
-            $("#updateProcessBtn").classList.toggle("hidden");
-            $("#createProcessBtn").classList.toggle("hidden");
         }
+        $("#updateProcessBtn").classList.toggle("hidden");
+        $("#createProcessBtn").classList.toggle("hidden");
         
     })
 

@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if($("#resultScreen").classList.contains("hidden")) {
             $("#resultScreen").classList.toggle("hidden");
             $("#simulatorScreen").classList.toggle("hidden");
+            display_results(simulation);
         }
         
     })

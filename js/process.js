@@ -36,6 +36,7 @@ function Process(id, name, state, priority, is_io, running_chance, required_exec
     this.required_execution_time = required_execution_time;
     this.wait_time = 0;
     this.ready_time = 0;
+    this.new_time = 0;
     this.time_of_term = -1;
 
     this.delay_time = delay_time; // time until the process arrives in the new state

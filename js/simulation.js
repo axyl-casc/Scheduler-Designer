@@ -8,6 +8,8 @@ class Simulator {
         this.currentProcessIndex = 0; // Keeps track of the current process
         this.intervalId = null; // Stores the interval ID for the simulation
         this.totalSteps = 0;
+        this.cpuNotUsedFrames = 0;
+        this.ganttData = [];
     }
 
     initialize(process_list, scheduling_algorithm) {
@@ -18,9 +20,16 @@ class Simulator {
         this.totalSteps = 0;
         console.log("Simulator initialized with process list and scheduling algorithm.");
     }
+
+    getGanttData(){
+        return this.ganttData;
+    }
     incrementRunningExecutionTime() {
+        let cpu_used = false;
         for (const process of this.processList) {
             if (process.state === "Running") {
+                cpu_used = true;
+                this.ganttData.push(process.id)
                 process.execution_time++;
                 if(process.execution_time >= process.required_execution_time){
                     process.state = "Terminated"
@@ -31,12 +40,20 @@ class Simulator {
             if (process.state === "Waiting") {
                 process.wait_time++;
             }
+            if (process.state === "New") {
+                process.new_time++;
+            }
             if (process.state === "Ready" || process.state === "Unwait") {
                 process.ready_time++;
             }
             if (process.state === "Terminated" && process.time_of_term == -1) {
                 process.time_of_term = this.totalSteps;
             }
+        }
+
+        // keep track of CPU usage
+        if(cpu_used == false){
+            this.cpuNotUsedFrames++;
         }
     }
     
@@ -182,7 +199,7 @@ class Simulator {
             console.error("Speed value must be greater than zero.");
             return;
         }
-        this.speed = speedValue;
+        this.speed = speedValue * speedValue;
         this.resetTimers();
         console.log(`Simulation speed set to ${speedValue}.`);
     }

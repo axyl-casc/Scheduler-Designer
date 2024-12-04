@@ -38,6 +38,7 @@ function Process(id, name, state, priority, is_io, running_chance, required_exec
     this.ready_time = 0;
     this.new_time = 0;
     this.time_of_term = -1;
-
+    this.first_execution_time = -1;
     this.delay_time = delay_time; // time until the process arrives in the new state
+    this.time_to_arrival = delay_time;
 }

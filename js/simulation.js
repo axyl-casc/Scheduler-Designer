@@ -25,6 +25,7 @@ class Simulator {
         return this.ganttData;
     }
     incrementRunningExecutionTime() {
+        this.totalSteps++;
         let cpu_used = false;
         for (const process of this.processList) {
             if (process.state === "Running") {
@@ -35,6 +36,10 @@ class Simulator {
                     process.state = "Terminated"
                 }else if(Math.random() > process.running_chance){
                     process.state = "Waiting";
+                }
+
+                if(process.first_execution_time == -1){
+                    process.first_execution_time = this.totalSteps;
                 }
             }
             if (process.state === "Waiting") {

@@ -42,13 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#editProcessBtn").addEventListener("click", () => {
         $("#mainScreen").classList.toggle("hidden");
         $("#pcbScreen").classList.toggle("hidden");
+        $("#createProcessBtn").textContent = "Create";
         popProcessList("editProcessList");
     })
     $("#showResultBtn").addEventListener("click", () => {
         if($("#resultScreen").classList.contains("hidden")) {
             $("#resultScreen").classList.toggle("hidden");
             $("#simulatorScreen").classList.toggle("hidden");
-            display_results(simulation);
         }
         
     })
@@ -113,18 +113,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    let process;
     $("#editProcessList").addEventListener("click", (e) => {
         
         let process_list = [];
         if(localStorage.getItem(storage_key)) {
             process_list = JSON.parse(localStorage.getItem(storage_key));
         }
-        const process = process_list.find((p) => p.id == e.target.dataset.id);
+        process = process_list.find((p) => p.id == e.target.dataset.id);
         
         if (process) {
-            displayProcessDetails(process);
+            //displayProcessDetails(process);
+            $("#processName").value = process.name;
+            //the new id is equal to the length of the process list before addition
+
+            //all new processes should be "New"? check with axyl
+            process.state = "New";
+
+            $("#priorityInput").value = process.priority;
+            $("#runningChanceInput").value = process.running_chance * 100;
+            $("#isIOInput").value = process.is_io;
+            $("#burstTimeInput").value = process.required_execution_time;
+            $("#arrivalTimeInput").value = process.delay_time;
         }
+        if($("#updateProcessBtn").classList.contains("hidden")) {
+            $("#createProcessBtn").classList.toggle("hidden");
+            $("#updateProcessBtn").classList.toggle("hidden");
+        } 
     });
+    $("#updateProcessBtn").addEventListener("click", () => {
+        if($("#createProcessBtn").classList.contains("hidden")) {
+            if(process != undefined) {
+                editProcess(process);
+                resetProcessForm();
+                popProcessList("editProcessList");
+                process = undefined;
+                $("#updateProcessBtn").classList.toggle("hidden");
+                $("#createProcessBtn").classList.toggle("hidden");
+            }
+            
+            
+        } else {
+            $("#updateProcessBtn").classList.toggle("hidden");
+            $("#createProcessBtn").classList.toggle("hidden");
+        }
+        
+    })
 
     
 
@@ -184,4 +218,14 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem(storage_key, JSON.stringify(process_list));
         }
 
+}
+
+function resetProcessForm() {
+    $("#processName").value = "";
+
+    $("#priorityInput").value = 0;
+    $("#runningChanceInput").value = ""
+    $("#isIOInput").value = "";
+    $("#burstTimeInput").value = "";
+    $("#arrivalTimeInput").value = "";
 }

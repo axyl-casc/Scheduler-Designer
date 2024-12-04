@@ -22,8 +22,7 @@ function createProcess() {
     //the new id is equal to the length of the process list before addition
     new_process.id = process_list.length; 
 
-    //all new processes should be "New"? check with axyl
-    new_process.state = "New";
+    new_process.state = "None";
 
     new_process.priority = $("#priorityInput").value;
     new_process.running_chance = $("#runningChanceInput").value / 100;
@@ -71,6 +70,33 @@ function appendProcessList(process) {
         localStorage.setItem(storage_key, JSON.stringify(process_list));
     }
 }
+/*
+*   editProcess - Changes one specific process that's being updated
+*
+*/
+function editProcess(process) {
+    let process_list = [];
+    if(localStorage.getItem(storage_key)) {
+        process_list = JSON.parse(localStorage.getItem(storage_key));
+    }
 
+    for(let p of process_list) {
+        if(p.id == process.id) {
+            p.name = $("#processName").value;
+            //the new id is equal to the length of the process list before addition
+
+            p.priority = $("#priorityInput").value;
+            p.running_chance = $("#runningChanceInput").value / 100;
+            p.is_io = $("#isIOInput").value;
+            p.required_execution_time = $("#burstTimeInput").value;
+            p.delay_time = $("#arrivalTimeInput").value;
+
+            break;
+        }
+    }
+    
+    localStorage.setItem(storage_key, JSON.stringify(process_list));
+    
+}
 
 

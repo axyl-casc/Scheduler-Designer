@@ -21,6 +21,13 @@ class Simulator {
         console.log("Simulator initialized with process list and scheduling algorithm.");
     }
 
+    isOn(){
+        if(this.totalSteps == 0 && this.isRunning == false){
+            return false;
+        }
+        return true;
+    }
+
     getGanttData(){
         return this.ganttData;
     }
@@ -77,6 +84,13 @@ class Simulator {
 
     getProcessList(){
         return this.processList;
+    }
+
+    forceStep(){
+        this.isRunning = true;
+        this.step();
+        this.pollWaitingQueue();
+        this.isRunning = false;
     }
 
     step(){
@@ -196,7 +210,7 @@ class Simulator {
     }
     play(){
         this.isRunning = true;
-        resetTimers();
+        this.resetTimers();
     }
 
     // resert the timers for calling the functions used

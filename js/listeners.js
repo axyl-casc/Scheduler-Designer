@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(storage_key, JSON.stringify(process_list));
         popProcessList("processList");
         $("#presetData").value = "default";
-
+        simulation.initialize(JSON.stringify(process_list), $("#scheduler").value);
         showToast("Updated process list...")
     })
 })

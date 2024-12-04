@@ -76,7 +76,7 @@ class Simulator {
     }
     
     run() {
-        if(this.schedulingAlgorithm != "select a scheduler"){ // messy :(
+        if(this.schedulingAlgorithm != "default"){ // messy :(
             this.reset(false)
             showToast("Simulation running...");
             this.isRunning = true;

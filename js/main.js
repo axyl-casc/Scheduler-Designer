@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
             $("#resultScreen").classList.toggle("hidden");
             $("#simulatorScreen").classList.toggle("hidden");
             display_results(simulation)
-            
         }
         
     })
@@ -109,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Attach click event to process items
     processList.addEventListener("click", (e) => {
-        
         let process_list = [];
         if(localStorage.getItem(storage_key)) {
             process_list = JSON.parse(localStorage.getItem(storage_key));
@@ -180,6 +178,17 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
     /*
+    *   clearProcessList - Deletes all locally stored process data
+    *
+    */
+    function clearProcessList() {
+        if(localStorage.getItem(storage_key)) {
+            let process_list = [];
+            localStorage.setItem(storage_key, JSON.stringify(process_list));
+        }
+
+}
+    /*
     *   popProcessList - Populates the list of processes based on locally stored data
     *
     *   list_id        - the id of the html ul element to populate.
@@ -215,22 +224,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     }
-
-    /*
-    *   clearProcessList - Deletes all locally stored process data
-    *
-    */
-    function clearProcessList() {
-        if(localStorage.getItem(storage_key)) {
-            let process_list = [];
-            localStorage.setItem(storage_key, JSON.stringify(process_list));
-        }
-
-}
-
 function resetProcessForm() {
     $("#processName").value = "";
-
     $("#priorityInput").value = 0;
     $("#runningChanceInput").value = ""
     $("#isIOInput").value = "";

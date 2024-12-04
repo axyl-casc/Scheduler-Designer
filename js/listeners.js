@@ -6,6 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#scheduler").addEventListener("change", () => {
         simulation.setScheduler($("#scheduler").value);
     })
+    $("#presetData").addEventListener("change", () => {
+        // set the process table based on the input
+        const setSelection = $("#presetData").value;
+        const process_list = []
+        console.log(`Set new process ${setSelection}`);
+        if(setSelection == "ap"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.1, 10, 0));
+            process_list.push(new Process(1, "kevin",  "None", 1, true, 0.75, 2, 5));
+            process_list.push(new Process(2, "test1",  "None", 2, true, 0.6, 5, 0));
+            process_list.push(new Process(3, "test2",  "None", 3, true, 0.5, 10, 0));
+        }else if(setSelection == "sp"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.5, 10, 0));
+        }
+        localStorage.setItem(storage_key, JSON.stringify(process_list));
+        popProcessList("processList");
+        $("#presetData").value = "default";
+
+        showToast("Updated process list...")
+    })
 })
 
 /*

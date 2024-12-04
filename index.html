@@ -24,11 +24,24 @@
     <script src="./js/listeners.js"></script>
 </head>
 
-<body>
-  <header class="w-full p-5 bg-gray-800 shadow-lg text-center">
+<body class="bg-gray-500">
+  <header class="w-full p-5 bg-gray-800 shadow-lg text-center sticky top-0 z-50">
     <h1 class="text-4xl font-bold text-white">CPU Scheduler Simulator</h1>
     <p class="text-lg mt-2 text-gray-400"></p>
   </header>
+  
+  <div class="flex gap-4 m-2 p-4 border border-black-300 rounded-lg bg-gray-300 shadow-md items-center">
+    <a href="#" 
+       onclick="document.querySelector('#aboutDialog').showModal()" 
+       class="px-4 py-2 border border-gray-300 rounded-md bg-transparent text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition">
+      About this project
+    </a>
+    <a href="#" 
+       onclick="document.querySelector('#algDialog').showModal()" 
+       class="px-4 py-2 border border-gray-300 rounded-md bg-transparent text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition">
+      CPU Scheduling Algorithms
+    </a>
+  </div>
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-20 right-5 hidden z-60">
     <div id="toast"
@@ -61,10 +74,36 @@
     </div>
   </dialog>
 
+  <!-- Dialog -->
+  <dialog id="algDialog" class="bg-white rounded-lg shadow-lg w-96 p-0">
+
+    <!-- Modal Header -->
+    <div class="px-4 py-2 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
+      <h2 class="text-lg font-semibold">About Us</h2>
+      <button id="closeDialog" class="text-white hover:text-gray-300"
+        onclick="document.querySelector('#algDialog').close()">&times;</button>
+    </div>
+
+    <!-- Modal Content -->
+    <div class="p-4">
+      <span>FCFS</span><span>SJF</span><span>LJF</span>
+      <p class="text-gray-700">
+        info on scheduling algorithms
+      </p>
+    </div>
+    <!-- Modal Footer -->
+    <div class="px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
+      <button id="closeDialogFooter" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        onclick="document.querySelector('#algDialog').close()">
+        Close
+      </button>
+    </div>
+  </dialog>
+
   <main id="mainScreen">
-    <div class="flex h-screen">
+    <div class="flex rounded">
       <!-- Left Container: Scrollable Process List -->
-      <div class="w-1/4 h-full bg-gray-300 border-r overflow-y-auto">
+      <div class="rounded m-2 w-1/4 h-full bg-gray-300 border-r overflow-y-auto">
         <div class="rounded-lg shadow-md bg-blue-300 p-4 m-4">
           <h2 class="text-xl font-bold p-4 border-b">Process List</h2>
           <ul id="processList" class="p-4 space-y-2">
@@ -75,15 +114,41 @@
             Edit Processes
           </button>
           <br><br><hr><br>
-          <label for="scheduler" class="block text-sm font-medium text-gray-700 mb-2">Choose a Scheduler:</label>
+          <label for="scheduler" class="block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Scheduler:</label>
           <select id="scheduler"
             class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option selected disabled>Select a scheduler</option>
+            <option selected disabled value="default">Select a scheduler</option>
             <option value="fifo">FIFO</option>
             <option value="sjf">SJF</option>
             <option value="ljf">LJF</option>
             <option value="priority">Priority</option>
           </select>
+          <label for="presetData" class="block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Process Preset: (optional)</label>
+
+          <select id="presetData"
+            class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option selected disabled value="default">Select data preset</option>
+            <option value="ap">Assorted processes</option>
+            <option value="sp">Single Process</option>
+            <option value="ljf">Descending Arrival</option>
+          </select>
+        </div>
+
+
+        <div class="flex items-start m-4">
+          <div class="w-full">
+            <div class="flex flex-row items-start">
+              <button id="showSimBtn"
+                class="mr-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                Simulation
+              </button>
+        
+              <button id="showResultBtn"
+                class="ml-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                Results
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -201,20 +266,6 @@
             <div id="boxPlot2"></div>
           </div>
         </div>
-
-        <div class="flex flex-row items-center m-0">
-          <button id="showSimBtn"
-            class="mr-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
-            Simulation
-          </button>
-
-          <button id="showResultBtn"
-            class="ml-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
-            Results
-          </button>
-
-
-        </div>
       </div>
     </div>
   </main>
@@ -320,12 +371,6 @@
     </div>
   </aside>
 
-
-
-
-
-
-
   </aside>
   <!-- Popup modal -->
   <div id="processPopup" class="fixed inset-0 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
@@ -338,12 +383,8 @@
 
 
 
-  <footer class="w-full p-5 bg-gray-800 text-center">
-    <p class="text-gray-500">
-      <a href="#" onclick="document.querySelector('#aboutDialog').showModal()" class="text-blue-600 hover:underline">About</a>
-    </p>
-    <hr>
-    <p class="text-gray-500">
+  <footer class="p-5 bg-gray-800 text-center">
+    <p class="p-2 text-gray-500">
       <a href="https://axyl-casc.github.io/" class="underline">Axyl</a> & <a href="https://github.com/Kevinmru737" class="underline">Kevin</a> - COMP3659 Fall 2024. All rights reserved.
     </p>
     <p class="text-gray-500">

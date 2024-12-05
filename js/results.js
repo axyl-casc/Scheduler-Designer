@@ -159,6 +159,7 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
         let turnaroundTime = completionTime - arrivalTime;
         let waitTime = turnaroundTime - burstTime;
         let responseTime = p.first_execution_time - arrivalTime;
+        let throughput = 
 
         console.log("--------------\nCPU CRITERIA:")
         console.log(p);
@@ -243,5 +244,10 @@ function additionalStats(simulator_obj){
     let cpu_usage = simulator_obj.getCpuUsage();
     cpu_util_div.textContent = `CPU Utilization: ${cpu_usage}%`;
     div.appendChild(cpu_util_div);
+
+    const cpu_through_div = document.createElement("p");
+    let cpu_throughput = simulator_obj.getCpuThroughput();
+    cpu_through_div.textContent = `CPU Throughput: ${cpu_throughput} processes per time unit`;
+    div.appendChild(cpu_through_div);
 
 }

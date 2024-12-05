@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
             $("#updateProcessBtn").classList.toggle("hidden");
             $("#createProcessBtn").classList.toggle("hidden");
         }
-        
+        resetProcessForm();
     })
     $("#showResultBtn").addEventListener("click", () => {
         if($("#resultScreen").classList.contains("hidden")) {

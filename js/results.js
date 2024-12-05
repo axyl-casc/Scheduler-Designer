@@ -11,6 +11,8 @@ function generateRGB(id) {
 
 function display_results(simulator_obj) {
     console.log("Displaying results window...");
+    simulator_obj.play();
+    simulator_obj.forceComplete()
     const div = document.querySelector("#generatedResults");
     
     const ganttData = simulator_obj.getGanttData(); // Array of processes running each step
@@ -42,7 +44,7 @@ function display_results(simulator_obj) {
         const processInfo = simulator_obj.getProcessInfo(segment.process);
         let trace = {
             x: [segment.duration],
-            y: [simulator_obj.schedulingAlgorithm],
+            y: [""],
             name: `${processInfo.name} (P${processInfo.id})`,
             orientation: 'h',
             marker: {
@@ -63,7 +65,7 @@ function display_results(simulator_obj) {
         },
         barmode: 'stack',
         xaxis: {
-            title: 'Time',
+            title: 'CPU Running Time',
             showgrid: true
         },
         yaxis: {
@@ -97,25 +99,25 @@ function generateStateTraces(simulator_obj) {
     const NewTrace = {
         y: newTimes,
         type: 'box',
-        name: 'New Times'
+        name: 'New State'
     };
 
     const ReadyTrace = {
         y: readyTimes,
         type: 'box',
-        name: 'Ready Times'
+        name: 'Ready State'
     };
 
     const RunningTrace = {
         y: runningTimes,
         type: 'box',
-        name: 'Execution Times'
+        name: 'Running State'
     };
 
     const WaitingTrace = {
         y: waitingTimes,
         type: 'box',
-        name: 'Waiting Times'
+        name: 'Waiting State'
     };
 
     // Combine traces into an array for plotting
@@ -153,7 +155,7 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
     for (let p of simulator_obj.getProcessList()) {
         let arrivalTime = p.time_to_arrival + p.new_time;
         let burstTime = p.required_execution_time;
-        let completionTime = p.ready_time+p.wait_time+p.new_time+p.execution_time;
+        let completionTime = p.ready_time+p.wait_time+p.new_time+p.execution_time+p.time_to_arrival;
         let turnaroundTime = completionTime - arrivalTime;
         let waitTime = turnaroundTime - burstTime;
         let responseTime = p.first_execution_time - arrivalTime;
@@ -228,4 +230,18 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
 
     // Render the plot
     Plotly.newPlot('boxPlot2', traces, layout);
+
+    additionalStats(simulator_obj);
+}
+
+
+function additionalStats(simulator_obj){
+    const div = $("#additionalStats");
+    div.innerHTML = "<br>";
+
+    const cpu_util_div = document.createElement("p");
+    let cpu_usage = simulator_obj.getCpuUsage();
+    cpu_util_div.textContent = `CPU Utilization: ${cpu_usage}%`;
+    div.appendChild(cpu_util_div);
+
 }

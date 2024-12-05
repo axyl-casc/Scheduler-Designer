@@ -13,12 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(`Set new process ${setSelection}`);
         if(setSelection == "ap"){
             process_list.push(new Process(0, "systemd",  "None", 0, true, 0.1, 10, 0));
-            process_list.push(new Process(1, "kevin",  "None", 1, true, 0.75, 2, 5));
-            process_list.push(new Process(2, "test1",  "None", 2, true, 0.6, 5, 0));
+            process_list.push(new Process(1, "kevin",  "None", 1, true, 0.75, 2, 7));
+            process_list.push(new Process(2, "test1",  "None", 2, true, 0.6, 5, 2));
             process_list.push(new Process(3, "test2",  "None", 3, true, 0.5, 10, 0));
         }else if(setSelection == "sp"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.5, 10, 0));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 10, 0));
+        }else if(setSelection == "da"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.5, 5, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.5, 5, 3));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.5, 5, 6));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.5, 5, 9));
+        }else if(setSelection == "noWait"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 10, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 2, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 1, 5, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 1, 10, 0));
         }
+        
         localStorage.setItem(storage_key, JSON.stringify(process_list));
         popProcessList("processList");
         $("#presetData").value = "default";

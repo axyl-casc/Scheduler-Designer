@@ -12,6 +12,10 @@ function updateSliderValue(value) {
   
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    // set up page view
+    window.scroll(0, 84);
+
     let process_list = [];
     if(!(localStorage.getItem(storage_key))) {
         //The 4 pushes below are test values - delete locally stored array "processes" to make them added.

@@ -85,7 +85,9 @@
     <div class="m-2">
       <span id="fcfs" class="cursor-pointer px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">FCFS</span>
       <span id="sjf" class="cursor-pointer px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">SJF</span>
-      <span id="ljf" class="cursor-pointer px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">LJF</span>
+      <span id="ljf" class="cursor-pointer px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">LJF</span>
+      <span id="priority" class="cursor-pointer px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600">Priority</span>
+      
       <p id="info-box" class="text-gray-700 mt-4">Click on an algorithm to see its description.</p>
     </div>
     <script>
@@ -158,9 +160,30 @@
         <blockquote style="font-style: italic; color: #555;">
             Best suited for specialized environments with computationally intensive workloads that prioritize sustained CPU usage over fairness.
         </blockquote>
-    `
+    `,
+        priority: `
+<h2>Priority Scheduling</h2>
+<p>
+    <strong>Description:</strong> This scheduling algorithm selects processes based on their priority level. Higher-priority processes are executed first, while lower-priority ones wait. It can be implemented as either preemptive (higher-priority process interrupts a running one) or non-preemptive.
+</p>
+<div style="margin-left: 1em;">
+    <h3>Pros:</h3>
+    <ul>
+        <li><strong>Efficiency:</strong> Critical or important tasks are executed sooner, improving responsiveness for high-priority processes.</li>
+        <li><strong>Flexibility:</strong> Allows for dynamic prioritization based on the importance of tasks.</li>
+    </ul>
+    <h3>Cons:</h3>
+    <ul>
+        <li><strong>Starvation:</strong> Low-priority processes might be indefinitely delayed if higher-priority processes keep arriving.</li>
+        <li><strong>Complexity:</strong> Requires a mechanism to assign and manage priorities effectively.</li>
+        <li><strong>Preemptive Overhead:</strong> If preemptive, frequent context switching can introduce additional processing overhead.</li>
+    </ul>
+</div>
+<blockquote style="font-style: italic; color: #555;">
+    Best suited for systems where certain tasks are significantly more critical than others, such as real-time or mission-critical environments.
+</blockquote>
+`
       };
-
 
       function updateInfo(algorithm) {
         document.getElementById("info-box").innerHTML = algorithmDescriptions[algorithm];
@@ -169,6 +192,7 @@
       document.getElementById("fcfs").addEventListener("click", () => updateInfo("fcfs"));
       document.getElementById("sjf").addEventListener("click", () => updateInfo("sjf"));
       document.getElementById("ljf").addEventListener("click", () => updateInfo("ljf"));
+      document.getElementById("priority").addEventListener("click", () => updateInfo("priority"));
     </script>
 
     <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
@@ -198,7 +222,7 @@
           <select id="scheduler"
             class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             <option selected disabled value="default">Select a scheduler</option>
-            <option value="fifo">FIFO</option>
+            <option value="fifo">FCFS</option>
             <option value="sjf">SJF</option>
             <option value="ljf">LJF</option>
             <option value="priority">Priority</option>
@@ -211,7 +235,8 @@
             <option selected disabled value="default">Select data preset</option>
             <option value="ap">Assorted processes</option>
             <option value="sp">Single Process</option>
-            <option value="ljf">Descending Arrival</option>
+            <option value="da">Descending Arrival</option>
+            <option value="noWait">No Interrupts</option>
           </select>
         </div>
 
@@ -323,8 +348,6 @@
                 <!-- Notification Box -->
                 <div id="notification-box"
                   class="w-full h-full bg-gray-800 text-white p-4 rounded-md shadow-md overflow-y-auto">
-                  <!-- Notifications will be appended here -->
-                  <p>No notifications yet...</p>
                 </div>
               </td>
             </tr>
@@ -337,6 +360,7 @@
             <div id="ganttChart"></div>
             <div id="boxPlot"></div>
             <div id="boxPlot2"></div>
+            <div id="additionalStats"></div>
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ class Simulator {
         this.schedulingAlgorithm = null; // Stores the scheduling algorithm
         this.isRunning = false; // Indicates if the simulation is running
         this.speed = 1; // Default simulation speed
-        this.currentProcessIndex = 0; // Keeps track of the current process
         this.intervalId = null; // Stores the interval ID for the simulation
         this.totalSteps = 0;
         this.cpuNotUsedFrames = 0;
@@ -16,9 +15,8 @@ class Simulator {
         this.processList = process_list;
         this.setScheduler(scheduling_algorithm)
         this.isRunning = false;
-        this.currentProcessIndex = 0;
-        this.totalSteps = 0;
         console.log("Simulator initialized with process list and scheduling algorithm.");
+        this.reset();
     }
 
     setScheduler(sch_str){
@@ -33,6 +31,10 @@ class Simulator {
         return true;
     }
 
+    getCpuUsage(){
+        return Math.floor((this.cpuRunningFrames / this.totalSteps) * 100)
+    }
+
     getGanttData(){
         return this.ganttData;
     }
@@ -40,19 +42,20 @@ class Simulator {
         this.totalSteps++;
         let cpu_used = false;
         for (const process of this.processList) {
-            if (process.state === "Running") {
-                this.cpuRunningFrames++;
-                cpu_used = true;
-                this.ganttData.push(process.id)
-                process.execution_time++;
-                if(process.execution_time >= process.required_execution_time){
-                    process.state = "Terminated"
-                }else if(Math.random() > process.running_chance){
-                    process.state = "Waiting";
-                }
-
-                if(process.first_execution_time == -1){
-                    process.first_execution_time = this.totalSteps;
+            if (process.state == "Running") {
+                if(cpu_used == false){
+                    this.cpuRunningFrames++;
+                    cpu_used = true;
+                    this.ganttData.push(process.id)
+                    process.execution_time++;
+                    if(process.execution_time >= process.required_execution_time){
+                        process.state = "Terminated"
+                    }else if(Math.random() > process.running_chance){
+                        process.state = "Waiting";
+                    }
+                    if(process.first_execution_time == -1){
+                        process.first_execution_time = this.totalSteps;
+                    }
                 }
             }
             if (process.state === "Waiting") {
@@ -72,6 +75,7 @@ class Simulator {
         // keep track of CPU usage
         if(cpu_used == false){
             this.cpuNotUsedFrames++;
+            console.log("CPU not running")
         }
     }
     
@@ -104,6 +108,14 @@ class Simulator {
         this.isRunning = false;
     }
 
+    forceComplete(){
+
+        while(this.isRunning){
+            this.step();
+            this.pollWaitingQueue()
+        }
+    }
+
     reset(displayToast){
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
@@ -122,6 +134,8 @@ class Simulator {
         }
 
         this.totalSteps = 0;
+        this.cpuNotUsedFrames = 0;
+        this.cpuRunningFrames = 0;
         updateProcessStates(this.processList);
         if(displayToast){
             showToast("Simulator reset...")
@@ -130,8 +144,13 @@ class Simulator {
     }
 
     step(){
+        if(this.processList.every(process => process.state == "Terminated")){
+            updateProcessStates(this.processList);
+            this.isRunning = false;
+            return;
+        }
+
         console.log(this.processList)
-        this.incrementRunningExecutionTime();
         // add process to delay after a time
         let ret_val = false;
         for(let p of this.processList){
@@ -143,6 +162,9 @@ class Simulator {
                 p.delay_time--;
             }
         }
+
+        this.incrementRunningExecutionTime();
+
         for(let p of this.processList){
             if(p.delay_time <= 0 && p.state == "New"){
                 p.state = "Ready" // assumes new process creation is a queue

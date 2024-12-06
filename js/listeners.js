@@ -50,18 +50,25 @@ function createProcess() {
         process_list = JSON.parse(localStorage.getItem(storage_key));
     }
     let new_process = new Process;
-    new_process.name = $("#processName").value;
-    
     //the new id is equal to the length of the process list before addition
     new_process.id = process_list.length; 
 
+    if ($("#processName").value == "") {
+        new_process.name = "Process " + new_process.id;
+    } else {
+        new_process.name = $("#processName").value;
+    }
+    
     new_process.state = "None";
+    
 
-    new_process.priority = $("#priorityInput").value;
-    new_process.running_chance = $("#runningChanceInput").value / 100;
-    new_process.is_io = $("#isIOInput").value;
-    new_process.required_execution_time = $("#burstTimeInput").value;
-    new_process.delay_time = $("#arrivalTimeInput").value;
+    new_process.priority = convertToInt($("#priorityInput").value);
+    new_process.running_chance = convertToInt($("#runningChanceInput").value) / 100;
+    new_process.required_execution_time = convertToInt($("#burstTimeInput").value);
+    new_process.delay_time = convertToInt($("#arrivalTimeInput").value);
+    new_process.time_to_arrival = convertToInt($("#arrivalTimeInput").value);
+
+    console.log(new_process.time_to_arrival);
 
     appendProcessList(new_process);
 }
@@ -123,6 +130,7 @@ function editProcess(process) {
             p.is_io = $("#isIOInput").value;
             p.required_execution_time = $("#burstTimeInput").value;
             p.delay_time = $("#arrivalTimeInput").value;
+            p.time_to_arrival = $("#arrivalTimeInput").value;
 
             break;
         }
@@ -130,6 +138,19 @@ function editProcess(process) {
     
     localStorage.setItem(storage_key, JSON.stringify(process_list));
     
+}
+
+function convertToInt(value) {
+    // Attempt to convert the input to an integer
+    const number = parseInt(value, 10);
+
+    // Check if the conversion resulted in a valid number
+    if (isNaN(number)) {
+        return 0; // Return 0 if the conversion fails
+    }
+
+    // Return the converted integer
+    return number;
 }
 
 

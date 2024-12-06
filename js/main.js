@@ -55,9 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             $("#resultScreen").classList.toggle("hidden");
         }
 
-        if(localStorage.getItem(storage_key)) {
-            process_list = JSON.parse(localStorage.getItem(storage_key));
-        }
+        
     })
     $("#slider").addEventListener("change", () => {
         updateSliderValue($("#slider").value);
@@ -73,6 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     $("#playButton").addEventListener("click", () => {
+        if(localStorage.getItem(storage_key)) {
+            process_list = JSON.parse(localStorage.getItem(storage_key));
+        }
         if(simulation.isOn()){
             simulation.play();
         }else{
@@ -103,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Name:</strong> ${process.name}</p>
         <p><strong>State:</strong> ${process.state}</p>
         <p><strong>Priority:</strong> ${process.priority}</p>
-        <p><strong>Is IO:</strong> ${process.is_io}</p>
         <p><strong>Running Chance:</strong> ${process.running_chance}</p>
         <p><strong>Execution Time:</strong> ${process.execution_time}</p>
         <p><strong>Required Execution Time:</strong> ${process.required_execution_time}</p>
@@ -153,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             $("#priorityInput").value = process.priority;
             $("#runningChanceInput").value = process.running_chance * 100;
-            $("#isIOInput").value = process.is_io;
             $("#burstTimeInput").value = process.required_execution_time;
             $("#arrivalTimeInput").value = process.delay_time;
         }
@@ -235,7 +234,6 @@ function resetProcessForm() {
     $("#processName").value = "";
     $("#priorityInput").value = 0;
     $("#runningChanceInput").value = ""
-    $("#isIOInput").value = "";
     $("#burstTimeInput").value = "";
     $("#arrivalTimeInput").value = "";
 }

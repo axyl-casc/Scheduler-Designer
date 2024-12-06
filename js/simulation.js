@@ -21,7 +21,9 @@ class Simulator {
 
     setScheduler(sch_str){
         this.schedulingAlgorithm = sch_str.toLowerCase();
-        showToast(`Scheduler set to ${sch_str}`)
+        if(this.schedulingAlgorithm != "default"){
+            showToast(`Scheduler set to ${sch_str}`)
+        }
     }
 
     isOn(){

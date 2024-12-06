@@ -1,5 +1,3 @@
-# About the Project
-
 Welcome to the final project by **Axyl** and **Kevin** for COMP 3659!
 
 We are excited to share what we've built and hope you enjoy exploring it as much as we enjoyed creating it.
@@ -15,8 +13,5 @@ Our project simulates **non-preemptive CPU scheduling** and provides a dynamic, 
 - Detailed **CPU Statistics**, such as utilization, turnaround time, and other key performance metrics.
 
 ## Explore More
-
-We hope this project deepens your understanding of CPU scheduling concepts. Thank you for taking the time to explore our work!
-
 - Visit our [Scheduler Designer Wiki](https://github.com/axyl-casc/Scheduler-Designer/wiki) for detailed documentation.
 - Try the project yourself on the [Scheduler Designer Website](https://axyl-casc.github.io/Scheduler-Designer/).

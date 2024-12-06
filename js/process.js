@@ -10,6 +10,7 @@
  * @param {number} running_chance - A probability (between 0 and 1) representing the likelihood of the process executing 
  *                                  when given the opportunity, instead of waiting for I/O.
  * @param {number} required_execution_time - The total CPU time required for the process to complete.
+ * @param {number} delay_time - A time counter to be decremented to track when a process should be run
  *
  * @example
  * const process1 = new Process(101, "ProcessA", "Ready", 5, true, 0.7, 50);

@@ -189,6 +189,10 @@ class Simulator {
                 for(let p of this.processList){
                     p.priority = -1 * p.required_execution_time;
                 }
+            }else if(this.schedulingAlgorithm == "srt"){
+                for(let p of this.processList){
+                    p.priority = p.required_execution_time - p.execution_time;
+                }
             }
             ret_val = this.priority_step();
         }

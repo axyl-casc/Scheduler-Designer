@@ -109,8 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Required Execution Time:</strong> ${process.required_execution_time}</p>
         <p><strong>Wait Time:</strong> ${process.wait_time}</p>
         <p><strong>Ready Time:</strong> ${process.ready_time}</p>
-        <p><strong>Time of Termination:</strong> ${process.time_of_term}</p>
-        <p><strong>Delay Time:</strong> ${process.delay_time}</p>
+        `
+        if(simulation.isOn && process.state == "Terminated") {
+            processDetails.innerHTML += `<p><strong>Time of Termination:</strong> ${process.time_of_term}</p>`
+        }
+        processDetails.innerHTML +=`
+        <p><strong>Arrival Time:</strong> ${process.time_to_arrival}</p>
         `;
         processPopup.classList.remove("hidden");
     };
@@ -123,7 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const process = process_list.find((p) => p.id == e.target.dataset.id);
         
-        if (process) {
+        if (process && simulation.isOn()) {
+            displayProcessDetails(simulation.getProcessInfo(process.id));
+        } else if (process) {
             displayProcessDetails(process);
         }
     });
@@ -169,9 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#createProcessBtn").classList.toggle("hidden");
         
     })
-
-    
-
     // Close popup
     closePopup.addEventListener("click", () => {
         processPopup.classList.add("hidden");

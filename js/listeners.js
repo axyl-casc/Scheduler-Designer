@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 2, 0));
             process_list.push(new Process(2, "Process 2",  "None", 2, true, 1, 5, 0));
             process_list.push(new Process(3, "Process 3",  "None", 3, true, 1, 10, 0));
+        }else if(setSelection == "sorted"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 4, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 5, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 8, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 10, 0));
         }
         
         localStorage.setItem(storage_key, JSON.stringify(process_list));
@@ -122,15 +127,18 @@ function editProcess(process) {
 
     for(let p of process_list) {
         if(p.id == process.id) {
-            p.name = $("#processName").value;
+            if ($("#processName").value == "") {
+                p.name = "Process " + process.id;
+            } else {
+                p.name = $("#processName").value;
+            }
             //the new id is equal to the length of the process list before addition
 
-            p.priority = $("#priorityInput").value;
-            p.running_chance = $("#runningChanceInput").value / 100;
-            p.is_io = $("#isIOInput").value;
-            p.required_execution_time = $("#burstTimeInput").value;
-            p.delay_time = $("#arrivalTimeInput").value;
-            p.time_to_arrival = $("#arrivalTimeInput").value;
+            p.priority = convertToInt($("#priorityInput").value);
+            p.running_chance = convertToInt($("#runningChanceInput").value) / 100;
+            p.required_execution_time = convertToInt($("#burstTimeInput").value);
+            p.delay_time = convertToInt($("#arrivalTimeInput").value);
+            p.time_to_arrival = convertToInt($("#arrivalTimeInput").value);
 
             break;
         }

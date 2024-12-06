@@ -159,7 +159,6 @@ function generateSchedulingCriteriaTraces(simulator_obj) {
         let turnaroundTime = completionTime - arrivalTime;
         let waitTime = turnaroundTime - burstTime;
         let responseTime = p.first_execution_time - arrivalTime;
-        let throughput = 
 
         console.log("--------------\nCPU CRITERIA:")
         console.log(p);

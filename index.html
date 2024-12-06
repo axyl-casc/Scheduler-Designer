@@ -33,12 +33,18 @@
   <div class="flex gap-4 m-2 p-4 border border-black-300 rounded-lg bg-gray-300 shadow-md items-center">
     <a href="#" onclick="document.querySelector('#aboutDialog').showModal()"
       class="px-4 py-2 border border-gray-300 rounded-md bg-transparent text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition">
-      About this project
+      About this Project
     </a>
     <a href="#" onclick="document.querySelector('#algDialog').showModal()"
       class="px-4 py-2 border border-gray-300 rounded-md bg-transparent text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition">
       CPU Scheduling Algorithms
     </a>
+  </div>
+  <div class="absolute top-4 right-4 space-y-4">
+    <div class="w-16 h-16 bg-red-500 rounded-full"></div>
+  </div>
+  <div class="absolute top-4 right-8 space-y-4">
+    <div class="w-16 h-16 bg-blue-500 rounded-full"></div>
   </div>
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-20 right-5 hidden z-50">
@@ -47,22 +53,39 @@
     </div>
   </div>
   <!-- Dialog -->
-  <dialog id="aboutDialog" class="bg-white rounded-lg shadow-lg w-96 p-0">
+  <dialog id="aboutDialog" class="bg-white rounded-lg shadow-lg w-2/3 p-0">
 
     <!-- Modal Header -->
     <div class="px-4 py-2 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
-      <h2 class="text-lg font-semibold">About Us</h2>
+      <h2 class="text-lg font-semibold">About This Project</h2>
       <button id="closeDialog" class="text-white hover:text-gray-300"
         onclick="document.querySelector('#aboutDialog').close()">&times;</button>
     </div>
-
+  
     <!-- Modal Content -->
     <div class="p-4">
       <p class="text-gray-700">
-        This is the final project by Axyl and Kevin for COMP 3659. We hope you enjoy exploring what we've built and
-        appreciate the effort that went into this work.
+        Welcome to the final project by <strong>Axyl</strong> and <strong>Kevin</strong> for COMP 3659!
+      </p>
+      <p class="text-gray-700">
+        We're excited to share what we've built and hope you enjoy exploring it as much as we enjoyed creating it.
+      </p>
+      <p class="text-gray-700">
+        Our project simulates <strong>non-preemptive CPU scheduling</strong> and provides a dynamic, visual representation
+        of how different scheduling algorithms operate. The interactive CPU state diagram offers an intuitive way to
+        understand the behavior of these algorithms in real-time.
+      </p>
+      <h3 class="font-semibold text-gray-800 mt-4">What You'll Find on the Results Page</h3>
+      <ul class="list-disc list-inside text-gray-700">
+        <li>A <strong>Gantt Chart</strong> displaying the processes as they run, including points where they switch due to I/O interrupts.</li>
+        <li><strong>Box Plots</strong> illustrating the time spent in each state (e.g., Ready, Running, Waiting).</li>
+        <li>Detailed <strong>CPU Statistics</strong>, such as utilization, turnaround time, and other key performance metrics.</li>
+      </ul>
+      <p class="text-gray-700 mt-4">
+        We hope this project deepens your understanding of CPU scheduling concepts. Thank you for taking the time to explore our work!
       </p>
     </div>
+  
     <!-- Modal Footer -->
     <div class="px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
       <button id="closeDialogFooter" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -71,6 +94,7 @@
       </button>
     </div>
   </dialog>
+  
 
   <!-- Dialog -->
   <dialog id="algDialog" class="bg-white rounded-lg shadow-lg w-4/5 h-3/5 p-0">
@@ -82,11 +106,14 @@
         onclick="document.querySelector('#algDialog').close()">&times;</button>
     </div>
 
-    <div class="m-2">
-      <span id="fcfs" class="cursor-pointer px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">FCFS</span>
-      <span id="sjf" class="cursor-pointer px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">SJF</span>
-      <span id="ljf" class="cursor-pointer px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">LJF</span>
-      <span id="priority" class="cursor-pointer px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600">Priority</span>
+    <div class="flex space-x-4 m-2">
+      <span id="fcfs" class="px-4 py-2 bg-blue-500 text-white font-bold text-lg rounded-lg hover:bg-blue-600 transform hover:scale-105 transition duration-300">FCFS</span>
+      <span id="sjf" class="px-4 py-2 bg-green-500 text-white font-bold text-lg rounded-lg hover:bg-green-600 transform hover:scale-105 transition duration-300">SJF</span>
+      <span id="ljf" class="px-4 py-2 bg-yellow-500 text-white font-bold text-lg rounded-lg hover:bg-yellow-600 transform hover:scale-105 transition duration-300">LJF</span>
+      <span id="priority" class="px-4 py-2 bg-purple-500 text-white font-bold text-lg rounded-lg hover:bg-purple-600 transform hover:scale-105 transition duration-300">Priority</span>
+      <span id="srt" class="px-4 py-2 bg-red-500 text-white font-bold text-lg rounded-lg hover:bg-red-600 transform hover:scale-105 transition duration-300">SRT</span>
+    </div>
+    
       
       <p id="info-box" class="text-gray-700 mt-4">Click on an algorithm to see its description.</p>
     </div>
@@ -182,17 +209,35 @@
 <blockquote style="font-style: italic; color: #555;">
     Best suited for systems where certain tasks are significantly more critical than others, such as real-time or mission-critical environments.
 </blockquote>
+`,
+srt: `
+<h2>Shortest Time Remaining Scheduling</h2>
+<p>
+  <strong>Description:</strong>
+  This scheduling algorithm prioritizes processes based on their remaining execution time. 
+  Processes with the shortest remaining time are executed first, 
+  ensuring that shorter tasks are completed more quickly. 
+  It is a preemptive variant of Shortest Job Next (SJN), 
+  where the CPU can switch to a newly arrived process if its remaining time is shorter than the currently executing process. </p> <div style="margin-left: 1em;">
+     <h3>Pros:</h3> <ul>
+      <li><strong>Efficiency:</strong> Reduces the average waiting and turnaround time, making it highly effective for systems with many short processes.</li>
+      <li><strong>Predictability:</strong> Ensures that shorter tasks are completed promptly, benefiting interactive and time-sensitive operations.</li> </ul> <h3>Cons:</h3> <ul>
+        <li><strong>Starvation:</strong> Longer processes might suffer indefinite delays if shorter processes keep arriving.</li>
+        <li><strong>Overhead:</strong> Frequent context switching caused by preemption can introduce additional processing overhead.</li>
+        <li><strong>Complexity:</strong> Requires precise estimation of remaining time for processes, which may not always be feasible.</li>
+        </ul> </div> <blockquote style="font-style: italic; color: #555;"> Best suited for environments where minimizing average turnaround time is critical, such as batch processing systems or systems with predictable workloads. </blockquote>
 `
       };
 
       function updateInfo(algorithm) {
-        document.getElementById("info-box").innerHTML = algorithmDescriptions[algorithm];
+        document.querySelector("#info-box").innerHTML = algorithmDescriptions[algorithm];
       }
 
-      document.getElementById("fcfs").addEventListener("click", () => updateInfo("fcfs"));
-      document.getElementById("sjf").addEventListener("click", () => updateInfo("sjf"));
-      document.getElementById("ljf").addEventListener("click", () => updateInfo("ljf"));
-      document.getElementById("priority").addEventListener("click", () => updateInfo("priority"));
+      document.querySelector("#fcfs").addEventListener("click", () => updateInfo("fcfs"));
+      document.querySelector("#sjf").addEventListener("click", () => updateInfo("sjf"));
+      document.querySelector("#ljf").addEventListener("click", () => updateInfo("ljf"));
+      document.querySelector("#priority").addEventListener("click", () => updateInfo("priority"));
+      document.querySelector("#srt").addEventListener("click", () => updateInfo("srt"));
     </script>
 
     <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
@@ -213,12 +258,11 @@
             <!-- Add list items here -->
           </ul>
           <button id="editProcessBtn"
-            class="ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+            class="m-2 mb-4 ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
             Edit Processes
           </button>
-          <br><br>
-          <hr><br>
-          <label for="scheduler" class="block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Scheduler:</label>
+          <hr>
+          <label for="scheduler" class="mt-4 block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Scheduler:</label>
           <select id="scheduler"
             class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             <option selected disabled value="default">Select a scheduler</option>
@@ -242,21 +286,21 @@
         </div>
 
 
-        <div class="flex items-start m-4">
-          <div class="w-full">
-            <div class="flex flex-row items-start">
+        <div class="flex justify-center items-center m-4">
+          <div class="w-full text-center">
+            <div class="inline-flex items-center space-x-4">
               <button id="showSimBtn"
-                class="mr-2 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
+                class="bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
                 Simulation
               </button>
-
               <button id="showResultBtn"
-                class="ml-2 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+                class="bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
                 Results
               </button>
             </div>
           </div>
         </div>
+        
       </div>
       <!-- Right Container: Buttons for Results/Simulation -->
       <div id="windowScreen" class="rounded m-2 w-full h-full overflow-y-auto">
@@ -339,7 +383,7 @@
                       <button id="resetButton"
                         class="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">Reset</button>
                     </div>
-                    <label for="slider" class="mb-2 text-gray-700 font-medium p-2">Adjust Speed</label>
+                    <label for="slider" class="m-2 mt-4 text-gray-700 font-medium p-2">Adjust Speed</label>
                     <input id="slider" type="range" min="0" max="2.5" step="0.01" value="1"
                       class="w-64 accent-blue-500" />
                   </div>
@@ -489,8 +533,9 @@
         class="underline">Kevin</a> - COMP3659 Fall 2024. All rights reserved.
     </p>
     <p class="text-gray-500">
-      Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a> & <a
-        href="https://plotly.com/" class="text-blue-400 underline">Plotly</a>
+      Powered by <a href="https://tailwindcss.com/" class="text-blue-400 underline">Tailwind CSS</a>, <a
+        href="https://plotly.com/" class="text-blue-400 underline">Plotly</a> & <a
+        href="https://chatgpt.com/" class="text-blue-400 underline">ChatGPT</a>
     </p>
   </footer>
 

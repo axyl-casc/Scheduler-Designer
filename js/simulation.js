@@ -5,6 +5,7 @@ class Simulator {
         this.isRunning = false; // Indicates if the simulation is running
         this.speed = 1; // Default simulation speed
         this.intervalId = null; // Stores the interval ID for the simulation
+        this.interrupt_freq = 5;
         this.totalSteps = 0;
         this.cpuNotUsedFrames = 0;
         this.noProcessReadyFrames = 0;
@@ -43,7 +44,6 @@ class Simulator {
         return this.ganttData;
     }
     incrementRunningExecutionTime() {
-
         let isReadyProcess = false;
         for(let p of this.processList){
             if(p.state == "Ready"){
@@ -164,7 +164,16 @@ class Simulator {
             return;
         }
 
-        console.log(this.processList)
+        let CPU_interrupt = 5;
+        try{
+            CPU_interrupt = parseInt($("#cpuInterruptInput").value);
+            console.log(`CPU interrupt set to ${CPU_interrupt}`)
+        }catch{
+            console.log("No interrupt set")
+        }
+
+        this.interrupt_freq = CPU_interrupt
+
         // add process to delay after a time
         let ret_val = false;
         for(let p of this.processList){
@@ -186,8 +195,12 @@ class Simulator {
                 return true;
             }
         }
+        if(this.totalSteps % this.interrupt_freq == 0){
+            this.interrupt();
+            updateProcessStates(this.processList);
+            return true;
+        }
         updateProcessStates(this.processList);
-
         if(this.isRunning == true){
             if (this.schedulingAlgorithm == "fifo") {
                 for(let p of this.processList){
@@ -225,6 +238,7 @@ class Simulator {
         }
         return ret_val
     }
+
 
     priority_step() {
         let ret_val = true;
@@ -315,8 +329,19 @@ class Simulator {
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
 
+
         this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1.1 * (1000 / this.speed));
         this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
+    }
+
+    interrupt(){
+        if($("#preemptionCheckbox").checked){
+            for(let p of this.processList){
+                if(p.state == "Running"){
+                    p.state = "Ready";
+                }
+            }
+        }
     }
 
     setSpeed(speedValue) {

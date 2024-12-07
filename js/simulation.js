@@ -123,7 +123,6 @@ class Simulator {
     }
 
     forceComplete(){
-
         while(this.isRunning){
             this.step();
             this.pollWaitingQueue()
@@ -165,26 +164,18 @@ class Simulator {
         }
 
         let CPU_interrupt = 5;
-        try{
+
+        if(isNaN(parseInt($("#cpuInterruptInput").value))){
+            console.log("No interrupt set")
+        }else{
             CPU_interrupt = parseInt($("#cpuInterruptInput").value);
             console.log(`CPU interrupt set to ${CPU_interrupt}`)
-        }catch{
-            console.log("No interrupt set")
+
         }
 
         this.interrupt_freq = CPU_interrupt
 
-        // add process to delay after a time
         let ret_val = false;
-        for(let p of this.processList){
-            if(p.delay_time <= 0 && p.state == "None"){
-                p.state = "New"
-                updateProcessStates(this.processList);
-                return true;
-            }else if(p.state == "None"){
-                p.delay_time--;
-            }
-        }
 
         this.incrementRunningExecutionTime();
 
@@ -193,6 +184,15 @@ class Simulator {
                 p.state = "Ready" // assumes new process creation is a queue
                 updateProcessStates(this.processList);
                 return true;
+            }
+        }
+        for(let p of this.processList){
+            if(p.delay_time <= 0 && p.state == "None"){
+                p.state = "New"
+                updateProcessStates(this.processList);
+                return true;
+            }else if(p.state == "None"){
+                p.delay_time--;
             }
         }
         if(this.totalSteps % this.interrupt_freq == 0){
@@ -280,6 +280,9 @@ class Simulator {
             ret_val = false;
         }else if(currentProcess.state === "Ready"){
             currentProcess.state = "Running";
+            if(this.schedulingAlgorithm == "aging"){
+                currentProcess.priority++;
+            }
         }
 
         if(old_state == currentProcess.state){
@@ -329,8 +332,7 @@ class Simulator {
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
 
-
-        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1.1 * (1000 / this.speed));
+        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1000 / this.speed);
         this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
     }
 

@@ -67,6 +67,21 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(7, "Process 7",  "None", 1, true, 0.9, 67, 0));
             process_list.push(new Process(8, "Process 8",  "None", 2, true, 0.9, 23, 0));
             process_list.push(new Process(9, "Process 9",  "None", 3, true, 0.9, 5, 0));
+        }else if(setSelection == "sjfPreemption"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 300, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 250, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 200, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 150, 0));
+            process_list.push(new Process(4, "Process 4",  "None", 1, true, 0.9, 50, 0));
+        }else if(setSelection == "priorityPreemption"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 300, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 8, true, 0.9, 20, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 9, true, 0.9, 30, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 10, true, 0.9, 47, 0));
+            process_list.push(new Process(4, "Process 4",  "None", 1, true, 0.9, 50, 0));
+            process_list.push(new Process(5, "Process 5",  "None", 2, true, 0.9, 150, 200));
+            process_list.push(new Process(6, "Process 6",  "None", 1, true, 0.9, 150, 300));
+            process_list.push(new Process(7, "Process 7",  "None", 2, true, 0.9, 150, 400));
         }
         localStorage.setItem(storage_key, JSON.stringify(process_list));
         popProcessList("processList");

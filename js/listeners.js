@@ -24,11 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 50, 3));
             process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 50, 6));
             process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 50, 9));
-        }else if(setSelection == "noWait"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 100, 0));
-            process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 20, 0));
-            process_list.push(new Process(2, "Process 2",  "None", 2, true, 1, 50, 0));
-            process_list.push(new Process(3, "Process 3",  "None", 3, true, 1, 100, 0));
+        }else if(setSelection == "smallBurstWait"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 10, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 2, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 5, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 10, 0));
+        }else if(setSelection == "largeBurstWait"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 100, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 20, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 50, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 100, 0));
         }else if(setSelection == "sorted"){
             process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 40, 0));
             process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 50, 0));
@@ -73,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 200, 0));
             process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 150, 0));
             process_list.push(new Process(4, "Process 4",  "None", 1, true, 0.9, 50, 0));
-        }else if(setSelection == "priorityPreemption"){
+        }else if(setSelection == "priorityNoPre"){
             process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 300, 0));
             process_list.push(new Process(1, "Process 1",  "None", 8, true, 0.9, 20, 0));
             process_list.push(new Process(2, "Process 2",  "None", 9, true, 0.9, 30, 0));
@@ -82,6 +87,15 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(5, "Process 5",  "None", 2, true, 0.9, 150, 200));
             process_list.push(new Process(6, "Process 6",  "None", 1, true, 0.9, 150, 300));
             process_list.push(new Process(7, "Process 7",  "None", 2, true, 0.9, 150, 400));
+        }else if(setSelection == "priorityPreemption"){
+            process_list.push(new Process(0, "systemd",  "None", 1, true, 1, 1000, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 0, true, 1, 20, 50));
+            process_list.push(new Process(2, "Process 2",  "None", 0, true, 1, 30, 100));
+            process_list.push(new Process(3, "Process 3",  "None", 0, true, 1, 47, 200));
+            process_list.push(new Process(4, "Process 4",  "None", 0, true, 1, 50, 300));
+            process_list.push(new Process(5, "Process 5",  "None", 0, true, 1, 65, 400));
+            process_list.push(new Process(6, "Process 6",  "None", 0, true, 1, 75, 500));
+            process_list.push(new Process(7, "Process 7",  "None", 0, true, 1, 42, 750));
         }
         localStorage.setItem(storage_key, JSON.stringify(process_list));
         popProcessList("processList");

@@ -71,7 +71,7 @@
         We're excited to share what we've built and hope you enjoy exploring it as much as we enjoyed creating it.
       </p>
       <p class="text-gray-700">
-        Our project simulates <strong>non-preemptive CPU scheduling</strong> and provides a dynamic, visual representation
+        Our project simulates <strong>CPU scheduling</strong> and provides a dynamic, visual representation
         of how different scheduling algorithms operate. The interactive CPU state diagram offers an intuitive way to
         understand the behavior of these algorithms in real-time.
       </p>
@@ -283,10 +283,12 @@ srt: `
             <option value="normOverHead">Normal Overhead</option>
             <option value="oneBigManySmall">LJF vs SJF</option>
             <option value="sjfPreemption">SJF vs PSJF</option>
-            <option value="priorityPreemption">Priority</option>
+            <option value="priorityNoPre">Priority</option>
+            <option value="priorityPreemption">Priority Preemption</option>
             <option value="sp">Single Process</option>
             <option value="da">Descending Arrival</option>
-            <option value="noWait">No Interrupts</option>
+            <option value="smallBurstWait">Small CPU Bursts with I/O Transition</option>
+            <option value="largeBurstWait">Large CPU Bursts with I/O Transition</option>
           </select>
         </div>
 

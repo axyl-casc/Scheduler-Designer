@@ -52,6 +52,7 @@
       class="bg-green-600 text-white px-4 py-2 rounded shadow-md opacity-0 transition-opacity duration-500">
     </div>
   </div>
+
   <!-- Dialog -->
   <dialog id="aboutDialog" class="bg-white rounded-lg shadow-lg w-2/3 p-0 h-3/4">
 
@@ -95,6 +96,43 @@
     </div>
   </dialog>
   
+
+<!-- Dialog -->
+<dialog id="tableDialog" class="rounded-lg shadow-lg w-2/3 h-3/4 p-0 flex flex-col">
+  <!-- Close Button -->
+  <button id="closeTableDialog" 
+          class="ml-auto mr-4 mt-4 text-white bg-red-600 px-4 py-2 rounded hover:bg-red-700" 
+          onclick="document.getElementById('tableDialog').close()">
+    &times;
+  </button>
+  
+  <!-- Table Wrapper -->
+  <div class="p-4 flex-grow overflow-auto">
+    <table class="border-collapse border border-gray-400 w-full text-center">
+      <thead>
+        <tr class="bg-blue-600 text-white">
+          <th class="border border-gray-300 px-4 py-2">ID</th>
+          <th class="border border-gray-300 px-4 py-2">Name</th>
+          <th class="border border-gray-300 px-4 py-2">State</th>
+          <th class="border border-gray-300 px-4 py-2">Priority</th>
+          <th class="border border-gray-300 px-4 py-2">Running Chance</th>
+          <th class="border border-gray-300 px-4 py-2">Execution Time</th>
+          <th class="border border-gray-300 px-4 py-2">Required Execution Time</th>
+          <th class="border border-gray-300 px-4 py-2">Wait Time</th>
+          <th class="border border-gray-300 px-4 py-2">Ready Time</th>
+          <th class="border border-gray-300 px-4 py-2">New Time</th>
+          <th class="border border-gray-300 px-4 py-2">Time of Termination</th>
+          <th class="border border-gray-300 px-4 py-2">First Execution Time</th>
+          <th class="border border-gray-300 px-4 py-2">Time to Arrival</th>
+          <th class="border border-gray-300 px-4 py-2">Age</th>
+        </tr>
+      </thead>
+      <tbody id="processTableBody">
+        <!-- Rows inserted dynamically via JS -->
+      </tbody>
+    </table>
+  </div>
+</dialog>
 
   <!-- Dialog -->
   <dialog id="algDialog" class="bg-white rounded-lg shadow-lg w-4/5 h-4/5 p-0">
@@ -257,7 +295,6 @@ aging: `<h2>Priority Aging Scheduling</h2>
       document.querySelector("#sjf").addEventListener("click", () => updateInfo("sjf"));
       document.querySelector("#ljf").addEventListener("click", () => updateInfo("ljf"));
       document.querySelector("#priority").addEventListener("click", () => updateInfo("priority"));
-      document.querySelector("#srt").addEventListener("click", () => updateInfo("srt"));
       document.querySelector("#aging").addEventListener("click", () => updateInfo("aging"));
     </script>
 
@@ -282,6 +319,11 @@ aging: `<h2>Priority Aging Scheduling</h2>
             class="m-2 mb-4 ml-4 bg-green-500 text-white px-6 py-3 rounded shadow hover:bg-green-600 transition">
             Edit Processes
           </button>
+          <button id="displayTableBtn"
+          class="mb-4 bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
+          Display Process Table
+        </button>
+
           <hr>
           <label for="scheduler" class="mt-4 block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Scheduler:</label>
           <select id="scheduler"
@@ -355,6 +397,7 @@ aging: `<h2>Priority Aging Scheduling</h2>
                 class="bg-blue-500 text-white px-6 py-3 rounded shadow hover:bg-blue-600 transition">
                 Results
               </button>
+
             </div>
           </div>
         </div>

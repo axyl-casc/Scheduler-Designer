@@ -89,4 +89,38 @@ function addNotification(message) {
     // Scroll to the bottom to ensure the latest message is visible
     notificationBox.scrollTop = notificationBox.scrollHeight;
   }
+  function populateProcessTable(processesData) {
+    const tableBody = document.getElementById('processTableBody');
+    tableBody.innerHTML = ''; // Clear previous data if any
   
+    processesData.forEach(proc => {
+      const row = document.createElement('tr');
+  
+      const cells = [
+        proc.id,
+        proc.name,
+        proc.state,
+        proc.priority,
+        proc.running_chance,
+        proc.execution_time,
+        proc.required_execution_time,
+        proc.wait_time,
+        proc.ready_time,
+        proc.new_time,
+        proc.time_of_term,
+        proc.first_execution_time,
+        proc.time_to_arrival,
+        proc.age
+      ];
+      
+  
+      cells.forEach(cellData => {
+        const td = document.createElement('td');
+        td.className = 'border border-gray-300 px-4 py-2';
+        td.textContent = cellData;
+        row.appendChild(td);
+      });
+  
+      tableBody.appendChild(row);
+    });
+  }

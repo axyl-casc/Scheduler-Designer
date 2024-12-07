@@ -10,8 +10,6 @@ function updateProcessStates(processes) {
         let runningProcesses = new Set();
         let waitingProcesses = new Set();
 
-        // kebon
-
         // Sort processes into their respective states - kevin was here
         processes.forEach((process) => {
             switch (process.state) {
@@ -48,10 +46,7 @@ function updateProcessStates(processes) {
     }catch{
         console.log("utils.js : process state transition error")
     }
-
 }
-
-
 
 function showToast(text) {
     const toast = document.querySelector('#toast');

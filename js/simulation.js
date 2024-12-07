@@ -81,6 +81,9 @@ class Simulator {
             if (process.state === "Ready" || process.state === "Unwait") {
                 process.ready_time++;
             }
+            if(process.state == "Ready"){
+                process.age++;
+            }
             if (process.state === "Terminated" && process.time_of_term == -1) {
                 process.time_of_term = this.totalSteps;
             }
@@ -202,9 +205,10 @@ class Simulator {
         }
         updateProcessStates(this.processList);
         if(this.isRunning == true){
+            console.log(this.processList)
             if (this.schedulingAlgorithm == "fifo") {
                 for(let p of this.processList){
-                    p.priority = p.id + p.time_to_arrival * 100;
+                    p.priority = p.time_to_arrival;
                 }
             }else if(this.schedulingAlgorithm == "sjf"){
                 for(let p of this.processList){
@@ -212,11 +216,11 @@ class Simulator {
                 }
             }else if(this.schedulingAlgorithm == "ljf"){
                 for(let p of this.processList){
-                    p.priority = -1 * p.required_execution_time;
+                    p.priority = (-1 * p.required_execution_time);
                 }
             }else if(this.schedulingAlgorithm == "srt"){
                 for(let p of this.processList){
-                    p.priority = p.required_execution_time - p.execution_time;
+                    p.priority = (p.required_execution_time - p.execution_time);
                 }
             }
             ret_val = this.priority_step();
@@ -239,7 +243,6 @@ class Simulator {
         return ret_val
     }
 
-
     priority_step() {
         let ret_val = true;
         // Select the highest-priority process that is not Terminated
@@ -251,7 +254,20 @@ class Simulator {
             return false;
         }
         // Sort processes by priority (lower value = higher priority)
-        eligibleProcesses.sort((a, b) => a.priority - b.priority);
+
+        if($("#agingCheckbox").checked){
+            const agingFactorInput = $("#agingFactor");
+
+            let age_factor = parseInt(agingFactorInput.value);
+            if (isNaN(age_factor) || age_factor <= 0) {
+                age_factor = 10; // Default value
+            }
+            age_factor = age_factor / 100;
+            eligibleProcesses.sort((a, b) => (a.priority - (a.age * age_factor)) - (b.priority - (b.age * age_factor)));
+        }else{
+            eligibleProcesses.sort((a, b) => a.priority - b.priority);
+        }
+
 
         for(let p of eligibleProcesses){
             if(p.state == "New"){
@@ -280,9 +296,6 @@ class Simulator {
             ret_val = false;
         }else if(currentProcess.state === "Ready"){
             currentProcess.state = "Running";
-            if(this.schedulingAlgorithm == "aging"){
-                currentProcess.priority++;
-            }
         }
 
         if(old_state == currentProcess.state){

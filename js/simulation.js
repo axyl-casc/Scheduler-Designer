@@ -263,7 +263,6 @@ class Simulator {
                 age_factor = 10; // Default value
             }
             age_factor = age_factor / 100;
-            console.log(age_factor)
             eligibleProcesses.sort((a, b) => (a.priority - (a.age * age_factor)) - (b.priority - (b.age * age_factor)));
         }else{
             eligibleProcesses.sort((a, b) => a.priority - b.priority);

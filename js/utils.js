@@ -46,10 +46,7 @@ function updateProcessStates(processes) {
     }catch{
         console.log("utils.js : process state transition error")
     }
-
 }
-
-
 
 function showToast(text) {
     const toast = document.querySelector('#toast');

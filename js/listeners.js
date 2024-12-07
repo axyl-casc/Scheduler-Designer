@@ -7,6 +7,26 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#scheduler").addEventListener("change", () => {
         simulation.setScheduler($("#scheduler").value);
     })
+
+    $("#preemptionCheckbox").addEventListener("change", (event) => {
+        const cpuInterruptInput = $("#cpuInterruptInput");
+    
+        if (event.target.checked) {
+            cpuInterruptInput.classList.remove("hidden"); // Show the element
+        } else {
+            cpuInterruptInput.classList.add("hidden"); // Hide the element
+        }
+    });
+    $("#agingCheckbox").addEventListener("change", (event) => {
+        const agingFactor = document.querySelector("#agingFactor");
+
+        if (event.target.checked) {
+            agingFactor.classList.remove("hidden"); // Show the element
+        } else {
+            agingFactor.classList.add("hidden"); // Hide the element
+        }
+    });
+
     $("#presetData").addEventListener("change", () => {
         // set the process table based on the input
         const setSelection = $("#presetData").value;
@@ -208,5 +228,8 @@ function convertToInt(value) {
     // Return the converted integer
     return number;
 }
+
+
+
 
 

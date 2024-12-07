@@ -256,7 +256,15 @@ class Simulator {
         // Sort processes by priority (lower value = higher priority)
 
         if($("#agingCheckbox").checked){
-            eligibleProcesses.sort((a, b) => (a.priority - a.age) - (b.priority - b.age));
+            const agingFactorInput = $("#agingFactor");
+
+            let age_factor = parseInt(agingFactorInput.value);
+            if (isNaN(age_factor) || age_factor <= 0) {
+                age_factor = 10; // Default value
+            }
+            age_factor = age_factor / 100;
+            console.log(age_factor)
+            eligibleProcesses.sort((a, b) => (a.priority - (a.age * age_factor)) - (b.priority - (b.age * age_factor)));
         }else{
             eligibleProcesses.sort((a, b) => a.priority - b.priority);
         }

@@ -4,7 +4,7 @@ We are excited to share what we've built and hope you enjoy exploring it as much
 
 ## Overview
 
-Our project simulates **non-preemptive CPU scheduling** and provides a dynamic, visual representation of how different scheduling algorithms operate. The interactive CPU state diagram offers an intuitive way to understand the behavior of these algorithms in real-time.
+Our project simulates **CPU scheduling** and provides a dynamic, visual representation of how different scheduling algorithms operate. The interactive CPU state diagram offers an intuitive way to understand the behavior of these algorithms in real-time.
 
 ## Features on the Results Page
 

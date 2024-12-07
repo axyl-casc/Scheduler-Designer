@@ -219,6 +219,10 @@ class Simulator {
             return false;
         }
         updateProcessStates(this.processList);
+        while(ret_val == false){
+            this.pollWaitingQueue()
+            ret_val = this.step();
+        }
         return ret_val
     }
 

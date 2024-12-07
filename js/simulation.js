@@ -34,9 +34,10 @@ class Simulator {
         }
         return true;
     }
-    getCpuThroughput(){
-        return Math.floor(this.totalSteps / this.processList.length);
+    getCpuThroughput() {
+        return Math.floor(this.processList.length / this.totalSteps);
     }
+    
     getCpuUsage(){
         return Math.floor((this.cpuRunningFrames / this.totalSteps) * 100)
     }

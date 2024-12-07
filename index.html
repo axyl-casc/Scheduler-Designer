@@ -53,7 +53,7 @@
     </div>
   </div>
   <!-- Dialog -->
-  <dialog id="aboutDialog" class="bg-white rounded-lg shadow-lg w-2/3 p-0">
+  <dialog id="aboutDialog" class="bg-white rounded-lg shadow-lg w-2/3 p-0 h-3/4">
 
     <!-- Modal Header -->
     <div class="px-4 py-2 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
@@ -87,7 +87,7 @@
     </div>
   
     <!-- Modal Footer -->
-    <div class="px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
+    <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
       <button id="closeDialogFooter" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
         onclick="document.querySelector('#aboutDialog').close()">
         Close
@@ -97,7 +97,7 @@
   
 
   <!-- Dialog -->
-  <dialog id="algDialog" class="bg-white rounded-lg shadow-lg w-4/5 h-3/5 p-0">
+  <dialog id="algDialog" class="bg-white rounded-lg shadow-lg w-4/5 h-4/5 p-0">
     <!-- Modal Header -->
     <div class="px-4 py-2 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
       <h2 class="text-lg font-semibold">CPU Scheduling Algorithms</h2>
@@ -114,7 +114,7 @@
     </div>
     
       
-      <p id="info-box" class="text-gray-700 mt-4">Click on an algorithm to see its description.</p>
+      <p id="info-box" class="p-2 text-gray-700 mt-4">Click on an algorithm to see its description.</p>
     </div>
     <script>
       const algorithmDescriptions = {

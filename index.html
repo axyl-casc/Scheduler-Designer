@@ -315,25 +315,31 @@ aging: `<h2>Priority Aging Scheduling</h2>
 
         <div class="flex justify-center items-center m-4">
           <div class="w-full text-center">
-            <!-- New section for preemption checkbox and interrupt input -->
-            <div class="mb-4">
-              <label class="inline-flex items-center space-x-2">
-                <input id="agingCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="text-gray-700">Process Aging? (%)</span>
-              </label>
-              <input id="agingFactor" 
-              type="number" 
-              placeholder="Aging Factor (Default 10)" 
-              class="w-4/5 hidden ml-4 mb-4 px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:border-blue-300">
-     
-              <label class="inline-flex items-center space-x-2">
-                <input id="preemptionCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="text-gray-700">Preemption?</span>
-              </label>
-              <input id="cpuInterruptInput" 
-                     type="number" 
-                     placeholder="Interrupt frequency (Default 5)" 
-                     class="w-4/5 hidden ml-4 px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:border-blue-300">
+            <!-- Section for checkboxes and inputs -->
+            <div class="mb-4 space-y-4">
+              <!-- Aging Checkbox and Input -->
+              <div class="flex flex-col items-start">
+                <label class="inline-flex items-center space-x-2">
+                  <input id="agingCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                  <span class="text-gray-700">Process Aging? (%)</span>
+                </label>
+                <input id="agingFactor" 
+                       type="number" 
+                       placeholder="Aging Factor (Default 10)" 
+                       class="w-full hidden mt-2 px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:border-blue-300">
+              </div>
+              
+              <!-- Preemption Checkbox and Input -->
+              <div class="flex flex-col items-start">
+                <label class="inline-flex items-center space-x-2">
+                  <input id="preemptionCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                  <span class="text-gray-700">Pre-emption?</span>
+                </label>
+                <input id="cpuInterruptInput" 
+                       type="number" 
+                       placeholder="Interrupt frequency (Default 5)" 
+                       class="w-full hidden mt-2 px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:border-blue-300">
+              </div>
             </div>
           </div>
         </div>

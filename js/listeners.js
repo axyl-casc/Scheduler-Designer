@@ -13,27 +13,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const process_list = []
         console.log(`Set new process ${setSelection}`);
         if(setSelection == "ap"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.1, 10, 0));
-            process_list.push(new Process(1, "kevin",  "None", 1, true, 0.75, 2, 7));
-            process_list.push(new Process(2, "test1",  "None", 2, true, 0.6, 5, 2));
-            process_list.push(new Process(3, "test2",  "None", 3, true, 0.5, 10, 0));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 100, 0));
+            process_list.push(new Process(1, "kevin",  "None", 1, true, 0.9, 20, 7));
+            process_list.push(new Process(2, "test1",  "None", 2, true, 0.9, 50, 2));
+            process_list.push(new Process(3, "test2",  "None", 3, true, 0.9, 100, 0));
         }else if(setSelection == "sp"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 10, 0));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 100, 0));
         }else if(setSelection == "da"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.5, 5, 0));
-            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.5, 5, 3));
-            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.5, 5, 6));
-            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.5, 5, 9));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 50, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 50, 3));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 50, 6));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 50, 9));
         }else if(setSelection == "noWait"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 10, 0));
-            process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 2, 0));
-            process_list.push(new Process(2, "Process 2",  "None", 2, true, 1, 5, 0));
-            process_list.push(new Process(3, "Process 3",  "None", 3, true, 1, 10, 0));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 100, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 20, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 1, 50, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 1, 100, 0));
         }else if(setSelection == "sorted"){
-            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 4, 0));
-            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 5, 0));
-            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 8, 0));
-            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 10, 0));
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 40, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 50, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 80, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 100, 0));
         }else if(setSelection == "minOverHead"){
             process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 200, 0));
             process_list.push(new Process(1, "Process 1",  "None", 1, true, 1, 200, 0));
@@ -56,6 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(7, "Process 7",  "None", 1, true, 0.9, 200, 0));
             process_list.push(new Process(8, "Process 8",  "None", 2, true, 0.9, 200, 0));
             process_list.push(new Process(9, "Process 9",  "None", 3, true, 0.9, 200, 0));
+        }else if(setSelection == "oneBigManySmall"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 1000, 0));
+            process_list.push(new Process(1, "Process 1",  "None", 1, true, 0.9, 20, 0));
+            process_list.push(new Process(2, "Process 2",  "None", 2, true, 0.9, 30, 0));
+            process_list.push(new Process(3, "Process 3",  "None", 3, true, 0.9, 40, 0));
+            process_list.push(new Process(4, "Process 4",  "None", 1, true, 0.9, 50, 0));
+            process_list.push(new Process(5, "Process 5",  "None", 2, true, 0.9, 60, 0));
+            process_list.push(new Process(6, "Process 6",  "None", 3, true, 0.9, 45, 0));
+            process_list.push(new Process(7, "Process 7",  "None", 1, true, 0.9, 67, 0));
+            process_list.push(new Process(8, "Process 8",  "None", 2, true, 0.9, 23, 0));
+            process_list.push(new Process(9, "Process 9",  "None", 3, true, 0.9, 5, 0));
         }
         localStorage.setItem(storage_key, JSON.stringify(process_list));
         popProcessList("processList");

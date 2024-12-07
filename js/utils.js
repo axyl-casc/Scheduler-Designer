@@ -10,7 +10,7 @@ function updateProcessStates(processes) {
         let runningProcesses = new Set();
         let waitingProcesses = new Set();
 
-        // Sort processes into their respective states
+        // Sort processes into their respective states - kevin was here
         processes.forEach((process) => {
             switch (process.state) {
                 case "New":

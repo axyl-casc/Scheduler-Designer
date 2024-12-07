@@ -1,30 +1,17 @@
 /**
- * Represents an operating system (OS) process.
+ * Represents a process in the simulation.
  *
- * @constructor
- * @param {number|string} id - A unique identifier for the process.
- * @param {string} name - The name of the process for identification purposes.
- * @param {string} state - The current state of the process (e.g., "Running", "Waiting", "Ready", "Terminated").
- * @param {number} priority - The priority level of the process; higher values indicate higher priority.
- * @param {boolean} is_io - Indicates whether the process is I/O-bound (`true`) or CPU-bound (`false`).
- * @param {number} running_chance - A probability (between 0 and 1) representing the likelihood of the process executing 
- *                                  when given the opportunity, instead of waiting for I/O.
- * @param {number} required_execution_time - The total CPU time required for the process to complete.
- * @param {number} delay_time - A time counter to be decremented to track when a process should be run
+ * A `Process` object contains information about an individual process, including its 
+ * identity, state, priority, execution details, and metrics for simulation tracking.
  *
- * @example
- * const process1 = new Process(101, "ProcessA", "Ready", 5, true, 0.7, 50);
- * console.log(process1);
- * // Output:
- * // {
- * //   id: 101,
- * //   name: "ProcessA",
- * //   state: "Ready",
- * //   priority: 5,
- * //   is_io: true,
- * //   running_chance: 0.7,
- * //   required_execution_time: 50
- * // }
+ * @param {number|string} id - The unique identifier for the process.
+ * @param {string} name - The name of the process.
+ * @param {string} state - The initial state of the process (e.g., "New", "Ready").
+ * @param {number} priority - The priority level of the process (lower value = higher priority).
+ * @param {boolean} is_io - Indicates whether the process is an I/O-bound process.
+ * @param {number} running_chance - The probability that the process continues running in the current cycle.
+ * @param {number} required_execution_time - The total time the process needs for execution.
+ * @param {number} delay_time - The time until the process transitions to the "New" state.
  */
 function Process(id, name, state, priority, is_io, running_chance, required_execution_time, delay_time) {
     this.id = id;                 // Assign the id

@@ -10,6 +10,8 @@ function updateProcessStates(processes) {
         let runningProcesses = new Set();
         let waitingProcesses = new Set();
 
+        // kebon
+
         // Sort processes into their respective states
         processes.forEach((process) => {
             switch (process.state) {

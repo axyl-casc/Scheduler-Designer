@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 editProcess(process);
                 resetProcessForm();
                 popProcessList("editProcessList");
+                showToast("Process updated...")
                 process = undefined;
             }
         }

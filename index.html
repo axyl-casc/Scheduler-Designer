@@ -111,6 +111,7 @@
       <span id="ljf" class="px-4 py-2 bg-yellow-500 text-white font-bold text-lg rounded-lg hover:bg-yellow-600 transform hover:scale-105 transition duration-300">LJF</span>
       <span id="priority" class="px-4 py-2 bg-purple-500 text-white font-bold text-lg rounded-lg hover:bg-purple-600 transform hover:scale-105 transition duration-300">Priority</span>
       <span id="srt" class="px-4 py-2 bg-red-500 text-white font-bold text-lg rounded-lg hover:bg-red-600 transform hover:scale-105 transition duration-300">SRT</span>
+      <span id="aging" class="px-4 py-2 bg-pink-500 text-white font-bold text-lg rounded-lg hover:bg-pink-600 transform hover:scale-105 transition duration-300">Priority Aging</span>
     </div>
     
       
@@ -225,6 +226,27 @@ srt: `
         <li><strong>Overhead:</strong> Frequent context switching caused by preemption can introduce additional processing overhead.</li>
         <li><strong>Complexity:</strong> Requires precise estimation of remaining time for processes, which may not always be feasible.</li>
         </ul> </div> <blockquote style="font-style: italic; color: #555;"> Best suited for environments where minimizing average turnaround time is critical, such as batch processing systems or systems with predictable workloads. </blockquote>
+`,
+aging: `<h2>Priority Aging Scheduling</h2>
+<p>
+    <strong>Description:</strong> This scheduling algorithm selects processes based on their priority level but incorporates an aging mechanism to prevent starvation. When a process enters the running state, its priority decreases over time, allowing lower-priority processes to eventually get a chance to execute.
+</p>
+<div style="margin-left: 1em;">
+    <h3>Pros:</h3>
+    <ul>
+        <li><strong>Starvation Prevention:</strong> Ensures that lower-priority processes will eventually execute, promoting fairness in the system.</li>
+        <li><strong>Adaptability:</strong> Allows the system to adjust process priorities dynamically over time, improving overall efficiency.</li>
+    </ul>
+    <h3>Cons:</h3>
+    <ul>
+        <li><strong>Complexity:</strong> Requires careful implementation of the aging mechanism to balance fairness and efficiency.</li>
+        <li><strong>Potential Delay for High-Priority Tasks:</strong> If aging is too aggressive, it might delay critical processes that need immediate execution.</li>
+        <li><strong>Overhead:</strong> Maintaining and updating priority levels can introduce additional computational overhead.</li>
+    </ul>
+</div>
+<blockquote style="font-style: italic; color: #555;">
+    Best suited for systems where fairness is critical and starvation of low-priority processes must be avoided, such as multi-user or batch processing environments.
+</blockquote>
 `
       };
 
@@ -237,6 +259,7 @@ srt: `
       document.querySelector("#ljf").addEventListener("click", () => updateInfo("ljf"));
       document.querySelector("#priority").addEventListener("click", () => updateInfo("priority"));
       document.querySelector("#srt").addEventListener("click", () => updateInfo("srt"));
+      document.querySelector("#aging").addEventListener("click", () => updateInfo("aging"));
     </script>
 
     <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
@@ -270,6 +293,7 @@ srt: `
             <option value="ljf">LJF</option>
             <option value="priority">Priority</option>
             <option value="srt">Shortest Time Remaining </option>
+            <option value="aging">Priority Aging </option>
           </select>
           <label for="presetData" class="block text-sm font-medium text-gray-700 mb-2 p-2">Choose a Process Preset:
             (optional)</label>
@@ -286,7 +310,7 @@ srt: `
             <option value="priorityPreemption">Priority</option>
             <option value="sp">Single Process</option>
             <option value="da">Descending Arrival</option>
-            <option value="noWait">No Interrupts</option>
+            <option value="noWait">No Wait State</option>
           </select>
         </div>
 
@@ -296,7 +320,7 @@ srt: `
             <div class="mb-4">
               <label class="inline-flex items-center space-x-2">
                 <input id="preemptionCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="text-gray-700">Preemption?</span>
+                <span class="text-gray-700">Preemption? (Default 5)</span>
               </label>
               <input id="cpuInterruptInput" 
                      type="number" 

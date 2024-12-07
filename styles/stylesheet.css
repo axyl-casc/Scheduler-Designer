@@ -27,3 +27,7 @@ svg {
 }
 
 
+dialog:not([open]) {
+    display: none;
+  }
+  

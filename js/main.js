@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Required Execution Time:</strong> ${process.required_execution_time}</p>
         <p><strong>Wait Time:</strong> ${process.wait_time}</p>
         <p><strong>Ready Time:</strong> ${process.ready_time}</p>
+        <p><strong>Age:</strong> ${process.age}</p>
         `
         if(simulation.isOn && process.state == "Terminated") {
             processDetails.innerHTML += `<p><strong>Time of Termination:</strong> ${process.time_of_term}</p>`

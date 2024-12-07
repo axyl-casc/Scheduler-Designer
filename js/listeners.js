@@ -1,5 +1,11 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Add event listeners
+    $('#displayTableBtn').addEventListener('click', () => {
+    populateProcessTable(JSON.parse(localStorage.getItem(storage_key)));
+    $('#tableDialog').showModal();
+  });
+
     $("#createProcessBtn").addEventListener("click", () => {
         createProcess();
         showToast("Creating process...")

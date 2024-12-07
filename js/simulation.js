@@ -329,8 +329,7 @@ class Simulator {
         clearInterval(this.intervalId);
         clearInterval(this.intervalIdWait);
 
-
-        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1.1 * (1000 / this.speed));
+        this.intervalIdWait = setInterval(() => this.pollWaitingQueue(), 1000 / this.speed);
         this.intervalId = setInterval(() => this.step(), 1000 / this.speed);
     }
 

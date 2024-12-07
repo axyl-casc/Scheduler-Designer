@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Name:</strong> ${process.name}</p>
         <p><strong>State:</strong> ${process.state}</p>
         <p><strong>Priority:</strong> ${process.priority}</p>
-        <p><strong>Running Chance:</strong> ${process.running_chance}</p>
+        <p><strong>Running Chance:</strong> ${process.running_chance * 100}%</p>
         <p><strong>Execution Time:</strong> ${process.execution_time}</p>
         <p><strong>Required Execution Time:</strong> ${process.required_execution_time}</p>
         <p><strong>Wait Time:</strong> ${process.wait_time}</p>

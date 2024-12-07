@@ -35,8 +35,13 @@ class Simulator {
         return true;
     }
     getCpuThroughput() {
-        return Math.floor(this.processList.length / this.totalSteps);
+        const terminatedCount = this.processList.filter(p => p.state === "Terminated").length;
+        if (this.totalSteps === 0) {
+            return 0;
+        }
+        return (terminatedCount / this.totalSteps).toFixed(3);
     }
+    
     
     getCpuUsage(){
         return Math.floor((this.cpuRunningFrames / this.totalSteps) * 100)

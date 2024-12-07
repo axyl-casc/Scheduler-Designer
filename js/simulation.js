@@ -212,7 +212,7 @@ class Simulator {
                 }
             }else if(this.schedulingAlgorithm == "sjf"){
                 for(let p of this.processList){
-                    p.priority = p.required_execution_time;
+                    p.priority = (p.required_execution_time - p.execution_time);
                 }
             }else if(this.schedulingAlgorithm == "ljf"){
                 for(let p of this.processList){

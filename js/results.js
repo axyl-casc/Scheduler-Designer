@@ -51,10 +51,15 @@ function display_results(simulator_obj) {
                 color: generateRGB(segment.process), // Generate color based on the process
                 width: 1
             },
-            hoverinfo: 'text',
-            text: [`Start: ${segment.startTime}, End: ${segment.endTime}`],
-            type: 'bar'
+            hovertemplate: `
+            <b>Process:</b> ${processInfo.name} (P${processInfo.id})<br>
+            <b>Start Time:</b> ${segment.startTime}<br>
+            <b>End Time:</b> ${segment.endTime}<br>
+            <b>Duration:</b> ${segment.duration}<extra></extra>
+        `,  // Hover template for displaying detailed information
+        type: 'bar'
         };
+
         data.push(trace);
     }
 

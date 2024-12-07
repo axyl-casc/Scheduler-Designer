@@ -306,7 +306,7 @@ class Simulator {
 
     setSpeed(speedValue) {
         if (speedValue <= 0) {
-            console.error("Speed value must be greater than zero.");
+            console.log("simulation.js: Speed value must be greater than zero.");
             return;
         }
         this.speed = speedValue * speedValue;
@@ -317,7 +317,7 @@ class Simulator {
     getProcessInfo(process_id) {
         const process = this.processList.find(proc => proc.id === process_id);
         if (!process) {
-            console.error(`Process with ID ${process_id} not found.`);
+            console.log(`simulation.js : Process with ID ${process_id} not found.`);
             return null;
         }
         return process;

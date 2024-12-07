@@ -44,7 +44,7 @@ function updateProcessStates(processes) {
         $("#running_state_process").textContent = Array.from(runningProcesses).join(", ");
         $("#wait_state_process").textContent = Array.from(waitingProcesses).join(", ");
     }catch{
-
+        console.log("utils.js : process state transition error")
     }
 
 }
@@ -56,7 +56,7 @@ function showToast(text) {
     const toastContainer = document.querySelector('#toast-container');
 
     if (!toast || !toastContainer) {
-        console.error("Toast elements not found in the DOM");
+        console.log("utils.js : Toast elements not found in the DOM");
         return;
     }
 

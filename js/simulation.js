@@ -39,7 +39,7 @@ class Simulator {
         if (this.totalSteps === 0) {
             return 0;
         }
-        return (terminatedCount / this.totalSteps).toFixed(3);
+        return (terminatedCount / (this.totalSteps / 1000)).toFixed(3);
     }
     
     

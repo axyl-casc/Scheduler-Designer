@@ -37,6 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
             process_list.push(new Process(1, "kevin",  "None", 1, true, 0.9, 20, 7));
             process_list.push(new Process(2, "test1",  "None", 2, true, 0.9, 50, 2));
             process_list.push(new Process(3, "test2",  "None", 3, true, 0.9, 100, 0));
+        } else if(setSelection == "apNoWait"){
+            process_list.push(new Process(0, "systemd",  "None", 0, true, 1, 100, 0));
+            process_list.push(new Process(1, "kevin",  "None", 1, true, 1, 20, 7));
+            process_list.push(new Process(2, "test1",  "None", 2, true, 1, 50, 2));
+            process_list.push(new Process(3, "test2",  "None", 3, true, 1, 100, 0));
         }else if(setSelection == "sp"){
             process_list.push(new Process(0, "systemd",  "None", 0, true, 0.9, 100, 0));
         }else if(setSelection == "da"){

@@ -251,7 +251,7 @@ function additionalStats(simulator_obj){
 
     const cpu_through_div = document.createElement("p");
     let cpu_throughput = simulator_obj.getCpuThroughput();
-    cpu_through_div.textContent = `CPU Throughput: ${cpu_throughput} processes per time unit`;
+    cpu_through_div.textContent = `CPU Throughput: ${cpu_throughput} processes per (time unit / 1000)`;
     div.appendChild(cpu_through_div);
 
 }

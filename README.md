@@ -15,3 +15,5 @@ Our project simulates **CPU scheduling** and provides a dynamic, visual represen
 ## Explore More
 - Visit our [Scheduler Designer Wiki](https://github.com/axyl-casc/Scheduler-Designer/wiki) for detailed documentation.
 - Try the project yourself on the [Scheduler Designer Website](https://axyl-casc.github.io/Scheduler-Designer/).
+- Explore our [Planning Section](https://axyl-casc.github.io/Scheduler-Designer/planning) to learn about the design and development process.
+

@@ -7,6 +7,7 @@ class Simulator {
         this.intervalId = null; // Stores the interval ID for the simulation
         this.totalSteps = 0;
         this.cpuNotUsedFrames = 0;
+        this.noProcessReadyFrames = 0;
         this.cpuRunningFrames = 0;
         this.ganttData = [];
     }
@@ -42,6 +43,16 @@ class Simulator {
         return this.ganttData;
     }
     incrementRunningExecutionTime() {
+
+        let isReadyProcess = false;
+        for(let p of this.processList){
+            if(p.state == "Ready"){
+                isReadyProcess = true;
+            }
+        }
+        if(isReadyProcess == false){
+            this.noProcessReadyFrames++;
+        }
         this.totalSteps++;
         let cpu_used = false;
         for (const process of this.processList) {

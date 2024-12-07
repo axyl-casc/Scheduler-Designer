@@ -97,27 +97,29 @@ function addNotification(message) {
       const row = document.createElement('tr');
   
       const cells = [
-        proc.id,
-        proc.name,
-        proc.state,
-        proc.priority,
-        proc.running_chance,
-        proc.execution_time,
-        proc.required_execution_time,
-        proc.wait_time,
-        proc.ready_time,
-        proc.new_time,
-        proc.time_of_term,
-        proc.first_execution_time,
-        proc.time_to_arrival,
-        proc.age
+        { value: proc.id, key: 'id' },
+        { value: proc.name, key: 'name' },
+        { value: proc.state, key: 'state' },
+        { value: proc.priority, key: 'priority' },
+        { value: proc.running_chance, key: 'running_chance' },
+        { value: proc.execution_time, key: 'execution_time' },
+        { value: proc.required_execution_time, key: 'required_execution_time' },
+        { value: proc.wait_time, key: 'wait_time' },
+        { value: proc.ready_time, key: 'ready_time' },
+        { value: proc.new_time, key: 'new_time' },
+        { value: proc.time_of_term, key: 'time_of_term' },
+        { value: proc.first_execution_time, key: 'first_execution_time' },
+        { value: proc.time_to_arrival, key: 'time_to_arrival' },
+        { value: proc.age, key: 'age' }
       ];
       
   
-      cells.forEach(cellData => {
+      cells.forEach(cell => {
+
         const td = document.createElement('td');
         td.className = 'border border-gray-300 px-4 py-2';
-        td.textContent = cellData;
+        td.textContent = (cell.value === -1 && cell.key !== 'priority') ? 'None' : cell.value;
+
         row.appendChild(td);
       });
   

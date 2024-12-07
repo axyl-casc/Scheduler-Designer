@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add event listeners
     $('#displayTableBtn').addEventListener('click', () => {
     populateProcessTable(JSON.parse(localStorage.getItem(storage_key)));
+        if(simulation.isOn()){
+            populateProcessTable(simulation.getProcessList());
+
+        }else{
+            populateProcessTable(JSON.parse(localStorage.getItem(storage_key)));
+        }
+    
     $('#tableDialog').showModal();
   });
 

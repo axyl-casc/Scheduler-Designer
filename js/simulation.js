@@ -86,10 +86,9 @@ class Simulator {
             }
             if (process.state === "Ready" || process.state === "Unwait") {
                 process.ready_time++;
-            }
-            if(process.state == "Ready"){
                 process.age++;
             }
+
             if (process.state === "Terminated" && process.time_of_term == -1) {
                 process.time_of_term = this.totalSteps;
             }
@@ -371,7 +370,10 @@ class Simulator {
             return;
         }
         this.speed = speedValue * speedValue;
-        this.resetTimers();
+        if(this.schedulingAlgorithm != "default"){
+            this.resetTimers();
+        }
+        
         console.log(`Simulation speed set to ${speedValue}.`);
     }
 

@@ -95,10 +95,8 @@
       </button>
     </div>
   </dialog>
-  
-
 <!-- Dialog -->
-<dialog id="tableDialog" class="rounded-lg shadow-lg w-2/3 h-3/4 p-0 flex flex-col">
+<dialog id="tableDialog" class="rounded-lg shadow-lg w-6/7 h-5/6 p-0 flex flex-col">
   <!-- Close Button -->
   <button id="closeTableDialog" 
           class="ml-auto mr-4 mt-4 text-white bg-red-600 px-4 py-2 rounded hover:bg-red-700" 
@@ -148,8 +146,11 @@
       <span id="sjf" class="px-4 py-2 bg-green-500 text-white font-bold text-lg rounded-lg hover:bg-green-600 transform hover:scale-105 transition duration-300">SJF</span>
       <span id="ljf" class="px-4 py-2 bg-yellow-500 text-white font-bold text-lg rounded-lg hover:bg-yellow-600 transform hover:scale-105 transition duration-300">LJF</span>
       <span id="priority" class="px-4 py-2 bg-purple-500 text-white font-bold text-lg rounded-lg hover:bg-purple-600 transform hover:scale-105 transition duration-300">Priority</span>
-      <span id="aging" class="px-4 py-2 bg-pink-500 text-white font-bold text-lg rounded-lg hover:bg-pink-600 transform hover:scale-105 transition duration-300">Priority Aging</span>
+      <div class="w-2"></div> <!-- Spacer between Priority and Aging -->
+      <span id="aging" class="px-4 py-2 bg-pink-500 text-white font-bold text-lg rounded-lg hover:bg-pink-600 transform hover:scale-105 transition duration-300">Aging</span>
+      <span id="preemption" class="px-4 py-2 bg-red-500 text-white font-bold text-lg rounded-lg hover:bg-red-600 transform hover:scale-105 transition duration-300">Pre-emption</span>
     </div>
+    
     
       
       <p id="info-box" class="p-2 text-gray-700 mt-4">Click on an algorithm to see its description.</p>
@@ -264,26 +265,50 @@ srt: `
         <li><strong>Complexity:</strong> Requires precise estimation of remaining time for processes, which may not always be feasible.</li>
         </ul> </div> <blockquote style="font-style: italic; color: #555;"> Best suited for environments where minimizing average turnaround time is critical, such as batch processing systems or systems with predictable workloads. </blockquote>
 `,
-aging: `<h2>Priority Aging Scheduling</h2>
+aging: `<h2>Aging in Scheduling</h2>
 <p>
-    <strong>Description:</strong> This scheduling algorithm selects processes based on their priority level but incorporates an aging mechanism to prevent starvation. When a process enters the running state, its priority decreases over time, allowing lower-priority processes to eventually get a chance to execute.
+    <strong>Description:</strong> Aging is a mechanism used in scheduling algorithms to ensure fairness and prevent starvation. It works by dynamically adjusting certain properties of processes—such as priority, wait time, or execution order—over time, giving lower-priority or long-waiting processes a chance to execute.
 </p>
 <div style="margin-left: 1em;">
     <h3>Pros:</h3>
     <ul>
-        <li><strong>Starvation Prevention:</strong> Ensures that lower-priority processes will eventually execute, promoting fairness in the system.</li>
-        <li><strong>Adaptability:</strong> Allows the system to adjust process priorities dynamically over time, improving overall efficiency.</li>
+        <li><strong>Fairness:</strong> Ensures that processes waiting for a long time are eventually executed, reducing the likelihood of starvation.</li>
+        <li><strong>Dynamic Adjustment:</strong> Adapts system behavior over time, balancing the needs of high-priority and low-priority processes.</li>
+        <li><strong>Improved System Utilization:</strong> Helps prevent bottlenecks by keeping all processes moving through the system.</li>
     </ul>
     <h3>Cons:</h3>
     <ul>
-        <li><strong>Complexity:</strong> Requires careful implementation of the aging mechanism to balance fairness and efficiency.</li>
-        <li><strong>Potential Delay for High-Priority Tasks:</strong> If aging is too aggressive, it might delay critical processes that need immediate execution.</li>
-        <li><strong>Overhead:</strong> Maintaining and updating priority levels can introduce additional computational overhead.</li>
+        <li><strong>Implementation Complexity:</strong> Requires careful design to balance fairness and efficiency without introducing significant delays.</li>
+        <li><strong>Overhead:</strong> Monitoring and adjusting process properties can add computational overhead, especially in systems with many processes.</li>
+        <li><strong>Impact on High-Priority Processes:</strong> Aggressive aging can delay critical tasks that require immediate attention.</li>
     </ul>
 </div>
 <blockquote style="font-style: italic; color: #555;">
-    Best suited for systems where fairness is critical and starvation of low-priority processes must be avoided, such as multi-user or batch processing environments.
+    Aging is best suited for systems where fairness is essential and starvation of long-waiting processes must be avoided, such as multi-user or batch processing environments.
 </blockquote>
+`,
+preemption:`<h2>Preemption in Scheduling</h2>
+<p>
+    <strong>Description:</strong> Preemption is a scheduling mechanism where a running process can be interrupted and moved back to the ready queue to allow another process to execute. This is typically used to ensure that high-priority or time-critical processes are given immediate attention, improving system responsiveness and fairness in multi-tasking environments.
+</p>
+<div style="margin-left: 1em;">
+    <h3>Pros:</h3>
+    <ul>
+        <li><strong>Improved Responsiveness:</strong> Ensures that high-priority or urgent tasks can be executed without waiting for lower-priority tasks to finish.</li>
+        <li><strong>Fairness:</strong> Prevents long-running processes from monopolizing the CPU, allowing multiple processes to share system resources effectively.</li>
+        <li><strong>Real-Time Capabilities:</strong> Enables the system to meet deadlines for time-sensitive processes.</li>
+    </ul>
+    <h3>Cons:</h3>
+    <ul>
+        <li><strong>Context-Switch Overhead:</strong> Frequent preemptions require saving and restoring process states, which can lead to significant performance overhead.</li>
+        <li><strong>Potential Starvation:</strong> If not carefully managed, low-priority processes might be preempted repeatedly, delaying their execution indefinitely.</li>
+        <li><strong>Complexity:</strong> Requires sophisticated algorithms to decide when and which processes to preempt, increasing implementation difficulty.</li>
+    </ul>
+</div>
+<blockquote style="font-style: italic; color: #555;">
+    Preemption is ideal for systems that require real-time responsiveness or need to balance fairness among processes, such as operating systems for interactive or multi-user environments.
+</blockquote>
+
 `
       };
 
@@ -296,6 +321,7 @@ aging: `<h2>Priority Aging Scheduling</h2>
       document.querySelector("#ljf").addEventListener("click", () => updateInfo("ljf"));
       document.querySelector("#priority").addEventListener("click", () => updateInfo("priority"));
       document.querySelector("#aging").addEventListener("click", () => updateInfo("aging"));
+      document.querySelector("#preemption").addEventListener("click", () => updateInfo("preemption"));
     </script>
 
     <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-gray-100 flex justify-end rounded-b-lg">
